@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NewsGenius</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<%= yield %>
+
+<% if logged_in? %>
+<form action="/session" method="post">
+	<input type="hidden" name="_method" value="delete">
+
+	<input type="submit" value="Logout">
+</form>
+<% end %>
+
+</body>
+</html>
