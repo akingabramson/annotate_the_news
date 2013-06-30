@@ -1,28 +1,10 @@
 class User < ActiveRecord::Base
-  attr_accessible :email, :username, :password
-  attr_accessor :password
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
 
-  validates :email, :username, presence: true
-  validates :email, :username, uniqueness: true
-  validates :password, length: { in: 3..20 }
-  
-  after_validation :encrypt_password
-
-
-  def encrypt_password
-    if password.present?
-      self.password_digest = BCrypt::Password.create(password)
-    end
-  end
-
-  def verify_password(password)
-    BCrypt::Password.new(password_digest) == password
-  end
-
-  def reset_session_token!
-    self.token = SecureRandom.urlsafe_base64
-    self.save!(validate: false)
-    self.token
-  end
-
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
 end

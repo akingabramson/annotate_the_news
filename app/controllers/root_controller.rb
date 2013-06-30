@@ -1,5 +1,5 @@
 class RootController < ApplicationController
-  before_filter :require_login
+  before_filter :authenticate_user!
 
   def root
     

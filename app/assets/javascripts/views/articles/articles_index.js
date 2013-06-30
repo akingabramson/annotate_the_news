@@ -5,11 +5,13 @@ NG.Views.ArticlesIndex = Backbone.View.extend({
 
   	var renderedTop = that.template();
   	that.$el.html(renderedTop);
+    var recommendedList = $("<ul>");
+    recommendedList.addClass("recommended-list");
   	that.collection.each(function(article){
   		var articleView = new NG.Views.ArticlesIndexArticle({model: article});
-  		that.$el.append(articleView.render().$el);
+  		recommendedList.append(articleView.render().$el);
   	});
-
+    that.$el.append(recommendedList);
   	return that;
   }
 
