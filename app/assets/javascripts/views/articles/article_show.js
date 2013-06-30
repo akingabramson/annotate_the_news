@@ -28,8 +28,9 @@ NG.Views.ArticleView = Backbone.View.extend({
     																										snippet: snippet});
     var beginning = bodyText.slice(0, snippetIndices[0]);
     var end = bodyText.slice(snippetIndices[1], bodyText.length);
-    var renderedsnippet = beginning + snippetLinkText + end;
-    $(event.currentTarget).html(renderedsnippet)
+    var renderedSnippet = beginning + snippetLinkText.trim() + end;
+    console.log(renderedSnippet)
+    $(event.currentTarget).html(renderedSnippet)
 
     // stringify html, delete between first and last indexes
      // put in the template at first index
