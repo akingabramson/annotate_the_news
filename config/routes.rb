@@ -2,6 +2,7 @@ NewsGenius::Application.routes.draw do
 
   resources :users, except: [:index, :edit]
   resource :session, only: [:new, :create, :destroy]
+  resources :recommended_articles, only: :index
 
   root :to => "root#root"
   # The priority is based upon order of creation:

@@ -6,15 +6,12 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-    p "password is"
-    p @user.password
     if @user.save
       session[:token] = @user.reset_session_token!
       redirect_to root_url
     else
       @errors = @user.errors.messages
-      p "errors are"
-      p @errors
+
       render :new
     end
   end

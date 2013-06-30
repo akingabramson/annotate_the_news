@@ -11,7 +11,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130629210259) do
+ActiveRecord::Schema.define(:version => 20130630033100) do
+
+  create_table "annotations", :force => true do |t|
+    t.integer  "annotator_id"
+    t.text     "body"
+    t.integer  "snippet_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "articles", :force => true do |t|
+    t.string   "url"
+    t.string   "title"
+    t.text     "body"
+    t.string   "news_source"
+    t.integer  "submitter_id"
+    t.integer  "topic_id"
+    t.boolean  "recommended",  :default => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  create_table "snippets", :force => true do |t|
+    t.integer  "article_id"
+    t.string   "words"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email"

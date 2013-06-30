@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  url: MyString
+  title: MyString
+  body: MyText
+  news_source: MyString
+  submitter_id: 1
+  author_id: 1
+  topic_id: 1
+  recommended: false
+
+two:
+  url: MyString
+  title: MyString
+  body: MyText
+  news_source: MyString
+  submitter_id: 1
+  author_id: 1
+  topic_id: 1
+  recommended: false

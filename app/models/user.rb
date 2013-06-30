@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   validates :email, :username, uniqueness: true
   validates :password, length: { in: 3..20 }
   
-  before_save :encrypt_password
+  after_validation :encrypt_password
 
 
   def encrypt_password
@@ -16,12 +16,12 @@ class User < ActiveRecord::Base
   end
 
   def verify_password(password)
-    self.password_digest == BCrypt::Password.new(password)
+    BCrypt::Password.new(password_digest) == password
   end
 
   def reset_session_token!
     self.token = SecureRandom.urlsafe_base64
-    self.save!
+    self.save!(validate: false)
     self.token
   end
 
