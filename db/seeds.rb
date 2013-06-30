@@ -15,5 +15,20 @@ articles = Article.create([
   title: "This is some title ain't it.",
   topic_id: 1,
   url: "www.google.com"
+  },
+  {
+  body: "This is some more body.  Please let it be more interesting.",
+  news_source: "Washington Ghost",
+  recommended: true,
+  submitter_id: 1,
+  title: "Politics, politics, and more politics",
+  topic_id: 1,
+  url: "www.google.com"
   }
   ])
+
+users = User.create([
+  {
+    email: "test@test.com",
+    password: "testing123"
+    }])

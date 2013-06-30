@@ -1,8 +1,7 @@
 NG.Views.ArticlesIndex = Backbone.View.extend({
   template: JST['articles/index'],
-  render: function() {
+    render: function() {
   	var that = this;
-
   	var renderedTop = that.template();
   	that.$el.html(renderedTop);
     var recommendedList = $("<ul>");
@@ -13,6 +12,7 @@ NG.Views.ArticlesIndex = Backbone.View.extend({
   	});
     that.$el.append(recommendedList);
   	return that;
-  }
+  },
+
 
 });
