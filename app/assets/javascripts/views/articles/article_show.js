@@ -19,8 +19,9 @@ NG.Views.ArticleView = Backbone.View.extend({
 	},
 
   showSnippet: function(event) {
-    var snippetId = $(event.currentTarget);
-    console.log(snippetId.attr("data-id"))
+    var snippetId = $(event.currentTarget).attr("data-id");
+    var shownSnippet = this.model.snippets.get(snippetId);
+    console.log(shownSnippet)
   },
 
   populateSnippets: function() {
@@ -101,20 +102,21 @@ NG.Views.ArticleView = Backbone.View.extend({
   },
 
   snippetsOverlap: function(snippetIndices) {
-    var snippets = this.model.snippets.models;
-    if (snippets.length === 0) {return};
-    var lastSnippetEnd = 0;
+    var sortedSnippets = _.sortBy(this.model.snippets.models,
+                                  function(model){return model.get("start")});
+    if (sortedSnippets.length === 0) {return};
     var snippetsOverlap = false;
 
-    _.each(snippets, function(snippet){
+    _.each(sortedSnippets, function(snippet){
     	var start = snippet.get('start');
       var end = snippet.get('end');
-      var range = _.range(start, end + 1);
-      var snippetStart = snippetIndices[0]-end;
-      var snippetEnd = snippetIndices[1]-end;
+      var range = _.range(start, end);
+      var snippetStart = snippetIndices[0];
+      var snippetEnd = snippetIndices[1];
       console.log(range);
       console.log(snippetStart);
   		if (_.contains(range, snippetStart) || _.contains(range, snippetEnd)) {
+        console.log("here")
   		 	snippetsOverlap = true;
   		} 
     });
