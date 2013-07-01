@@ -6,6 +6,8 @@ NG.Views.ArticleView = Backbone.View.extend({
 	template: JST["articles/article_show"],
 	events: {
     "mouseup .article-body": "popupAnnotate",
+    "click body" : "removePopups",
+    "click .snippet-link": "showSnippet"
   },
 	render: function() {
 		var that = this;
@@ -14,13 +16,18 @@ NG.Views.ArticleView = Backbone.View.extend({
     that.$el.html(renderedArticle);
     that.populateSnippets();
 		return that
-	},   
+	},
+
+  showSnippet: function(event) {
+    var snippetId = $(event.currentTarget);
+    console.log(snippetId.attr("data-id"))
+  },
 
   populateSnippets: function() {
     var that = this;
     var bodyText = (that.model.escape("body"));
     var finalBody = "";
-    var lastSnippetEnd = 0, lastSnippetBegin = 0;
+    var lastSnippetEnd = 0;
     var sortedSnippets = _.sortBy(that.model.snippets.models,
                                   function(model){return model.get("start")});
 
@@ -45,9 +52,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 
 	popupAnnotate: function(event) {
     var that = this;
-
-    that.$el.find(".annotate-button").remove();
-    that.$el.find(".new-annotation-form").remove();
+    that.removePopups()
 
  		var snippet = that.grabSnippet();
     if (String(snippet).length <= 0) return;
@@ -58,22 +63,25 @@ NG.Views.ArticleView = Backbone.View.extend({
     that.$el.find(".annotate-button").on("click", function(){
     	that.renderSnippet(snippet, event)
     });
+  },
 
+  removePopups: function() {
+    this.$el.find(".annotate-button").remove();
+    this.$el.find(".new-annotation-form").remove();
+    this.$el.find(".popup").remove();
   },
 
   renderSnippet: function(snippet, event) {
   	var that = this
 
     var snippetIndices = that.grabSnippetIndices(snippet);
-    var existingSnippet = that.snippetsOverlap(snippetIndices);
-
-    if (existingSnippet) {
+    if (that.snippetsOverlap(snippetIndices)) {
+      // "Can't annotate over an annotation!"
     	var renderedPopup = JST["articles/popup"]({x: 33, y: event.pageY});
-    	that.$el.find("#popup").html(renderedPopup);
-    	// "Can't annotate over an annotation!"
+    	that.$el.append(renderedPopup);
 
     } else {
-
+      // make a new snippet
     	var newSnippet = new NG.Models.Snippet({start: snippetIndices[0],
 																							end: snippetIndices[1], 
                                               article_id: that.model.id,
@@ -86,19 +94,31 @@ NG.Views.ArticleView = Backbone.View.extend({
     	
     	newSnippetView.render().$el.css({"position":"absolute",
     												           "top": event.pageY - 20 + "px",
-    												           "left": event.pageX + "px"});
+    												           "left": event.pageX + "px",
+                                        "background-color": "white"});
     	that.$el.append(newSnippetView.$el);
     }
   },
 
   snippetsOverlap: function(snippetIndices) {
-    this.model.snippets.each(function(snippet){
-    	var range = _.range(snippet.get('start'), snippet.get('end'));
-  		if (_.contains(range, snippetIndices[0]) || _.contains(range, snippetIndices[1])) {
-  		 	return snippet;
+    var snippets = this.model.snippets.models;
+    if (snippets.length === 0) {return};
+    var lastSnippetEnd = 0;
+    var snippetsOverlap = false;
+
+    _.each(snippets, function(snippet){
+    	var start = snippet.get('start');
+      var end = snippet.get('end');
+      var range = _.range(start, end + 1);
+      var snippetStart = snippetIndices[0]-end;
+      var snippetEnd = snippetIndices[1]-end;
+      console.log(range);
+      console.log(snippetStart);
+  		if (_.contains(range, snippetStart) || _.contains(range, snippetEnd)) {
+  		 	snippetsOverlap = true;
   		} 
     });
-    return false;
+    return snippetsOverlap;
   },
 
 
@@ -118,10 +138,10 @@ NG.Views.ArticleView = Backbone.View.extend({
   	var range = snippet.getRangeAt(0);
     var earlierSnippetId = $(snippet.anchorNode.previousSibling).attr("data-id")
     var earlierSnippet = this.model.snippets.get(earlierSnippetId);
-    var earlierSnippetEnd = earlierSnippet.get("end");
     var start, end;
 
     if (!!earlierSnippet) {
+      var earlierSnippetEnd = earlierSnippet.get("end");
       start = earlierSnippetEnd + range.startOffset
       end = earlierSnippetEnd + range.endOffset;
     } else {
