@@ -18,31 +18,28 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   populateSnippets: function() {
     var that = this;
-    var $body = that.$el.find(".article-body")
     var bodyText = (that.model.escape("body"));
     var finalBody = "";
     var lastSnippetEnd = 0, lastSnippetBegin = 0;
     var sortedSnippets = _.sortBy(that.model.snippets.models,
                                   function(model){return model.get("start")});
-    // keeps track of how shifted over the snippets are
+
     _.each(sortedSnippets, function(snippet){
       var snippetLinkText = JST["snippets/snippet_link"]({snippet: snippet});
+
       var snippetBegin = snippet.get("start");
       var snippetEnd = snippet.get("end");
-
-      console.log("start " + snippet.get("start"));
-      console.log("end " + snippet.get("end"));
-
+      // text from last snippet to beginning of this snippet
       var bodyBeginning = bodyText.slice(lastSnippetEnd, snippetBegin);
       finalBody += bodyBeginning;
       finalBody += snippetLinkText.trim();
+      // set end of last snippet
       lastSnippetEnd = snippetEnd;
-
     });
-    // make snippet link html, add actual text up to the point
-    // insert snippet, add body text at the end
+
 
     finalBody += bodyText.slice(lastSnippetEnd, bodyText.length);
+    var $body = that.$el.find(".article-body")
     $body.html(finalBody);
   },
 
