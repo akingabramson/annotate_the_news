@@ -16,6 +16,7 @@ NG.Views.NewSnippetView = Backbone.View.extend({
 		that.model.save({
 			success: function(savedSnippet) {
 				// that.linkifySnippet();
+				console.log("saved snippet")
 				var annotationText = that.$el.find("#new-annotation-text").val();
 				var annotation = new NG.Models.Annotation({body: annotationText, 
 																							snippet_id: that.model.id });

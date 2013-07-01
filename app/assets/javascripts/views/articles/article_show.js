@@ -1,6 +1,7 @@
 NG.Views.ArticleView = Backbone.View.extend({
 	initialize: function() {
-		this.listenTo(this.model.snippets, "all", this.render)
+		this.listenTo(this.model.snippets, "all", this.render);
+    // this.listenTo(this.model, "sync", this.render);
 	},
 	template: JST["articles/article_show"],
 	events: {
@@ -18,46 +19,31 @@ NG.Views.ArticleView = Backbone.View.extend({
   populateSnippets: function() {
     var that = this;
     var $body = that.$el.find(".article-body")
-    var bodyText = that.model.escape("body");
-    console.log(that.model.escape("body"));
-    var offset = 0
+    var bodyText = (that.model.escape("body"));
     var finalBody = "";
+    var lastSnippetEnd = 0, lastSnippetBegin = 0;
+    var sortedSnippets = _.sortBy(that.model.snippets.models,
+                                  function(model){return model.get("start")});
     // keeps track of how shifted over the snippets are
-    _.each(that.model.snippets.models, function(snippet){
+    _.each(sortedSnippets, function(snippet){
       var snippetLinkText = JST["snippets/snippet_link"]({snippet: snippet});
       var snippetBegin = snippet.get("start");
       var snippetEnd = snippet.get("end");
 
-      var bodyBeginning = bodyText.slice(0, snippetBegin-1);
-      finalBody += bodyBeginning;
-      finalBody += snippetLinkText;
-      bodyText = bodyText.slice(snippetEnd, bodyText.length);
-    });
+      console.log("start " + snippet.get("start"));
+      console.log("end " + snippet.get("end"));
 
+      var bodyBeginning = bodyText.slice(lastSnippetEnd, snippetBegin);
+      finalBody += bodyBeginning;
+      finalBody += snippetLinkText.trim();
+      lastSnippetEnd = snippetEnd;
+
+    });
     // make snippet link html, add actual text up to the point
     // insert snippet, add body text at the end
 
-    finalBody += bodyText
+    finalBody += bodyText.slice(lastSnippetEnd, bodyText.length);
     $body.html(finalBody);
-  },
-
-  renderNewSnippet: function(bodyText) {
-    var that = this;
-    var snippetLinkText = JST["snippets/snippet_link"]({snippet: that.model});
-
-    var snippetBegin = that.model.get("start");
-    var snippetEnd = that.model.get("end");
-
-    var bodyBeginning = bodyText.slice(0, snippetBegin);
-    var bodyEnd = bodyText.slice(snippetEnd, bodyText.length);
-    var renderedSnippet = beginning + snippetLinkText.trim() + end;
-
-    // stringify html, delete between first and last indexes
-     // put in the template at first index
-     // return html string
-     // put into article-body
-
-    return renderedSnippet;
   },
 
 	popupAnnotate: function(event) {
@@ -99,16 +85,12 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     	var newSnippetView = new NG.Views.NewSnippetView({model: newSnippet,
     																										event: event,
-    																										article: that.model})// new annotation form
+    																										article: that.model});// new annotation form
     	
     	newSnippetView.render().$el.css({"position":"absolute",
-    												 "top": event.pageY - 20 + "px",
-    												 "left": event.pageX + "px"});
+    												           "top": event.pageY - 20 + "px",
+    												           "left": event.pageX + "px"});
     	that.$el.append(newSnippetView.$el);
-
-    	// render
-
-
     }
   },
 
@@ -137,7 +119,19 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   grabSnippetIndices: function(snippet) {
   	var range = snippet.getRangeAt(0);
-  	var start = range.startOffset, end = range.endOffset;
+    var earlierSnippetId = $(snippet.anchorNode.previousSibling).attr("data-id")
+    var earlierSnippet = this.model.snippets.get(earlierSnippetId);
+    var earlierSnippetEnd = earlierSnippet.get("end");
+    var start, end;
+
+    if (!!earlierSnippet) {
+      start = earlierSnippetEnd + range.startOffset
+      end = earlierSnippetEnd + range.endOffset;
+    } else {
+      start = range.startOffset;
+      end = range.endOffset;
+    }
+    // ERROR HERE
   	return [start, end];
   },
 
