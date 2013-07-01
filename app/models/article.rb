@@ -7,12 +7,12 @@ class Article < ActiveRecord::Base
   # belongs_to :submitter, class_name: "User", :foreign_key => :submitter_id
   # belongs_to :topic
 
-  # has_many :annotations
-  # has_many :snippets
+  has_many :snippets
 
-  # def as_json(options = {})
-  #   super(options.merge({include: {snippets: {include: :annotations}}}))
-  # end
+
+  def as_json(options = {})
+    super(options.merge({include: {snippets: {include: :annotations}}}))
+  end
 
 
 end

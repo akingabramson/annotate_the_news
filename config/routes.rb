@@ -4,10 +4,11 @@ NewsGenius::Application.routes.draw do
 
   devise_for :users
 
-  # resources :users, except: [:index, :edit]
-  # resource :session, only: [:new, :create, :destroy]
   resources :recommended_articles, only: :index
-  resources :articles, :only => [:create, :update, :destroy, :show]
+  resources :articles, :only => [:create, :update, :destroy, :show] do
+    resources :snippets, :only => [:create, :update, :destroy, :show]
+  end
+  resources :annotations, :only => [:create, :update, :destroy, :show]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

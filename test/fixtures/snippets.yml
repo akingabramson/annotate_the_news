@@ -1,9 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
+  text: MyString
   article_id: 1
-  words: MyString
+  start: 1
+  end: 1
 
 two:
+  text: MyString
   article_id: 1
-  words: MyString
+  start: 1
+  end: 1
