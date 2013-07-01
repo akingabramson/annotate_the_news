@@ -15,6 +15,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 	popupAnnotate: function(event) {
     var that = this;
     that.$el.find(".annotate-button").remove();
+    that.$el.find(".new-annotation-form").remove();
 
  		var snippet = that.grabSnippet();
  		console.log(snippet)
@@ -31,7 +32,6 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   renderSnippet: function(snippet, event) {
   	var that = this
-  	that.$el.find(".new-annotation-form").remove();
 
     var snippetIndices = that.grabSnippetIndices(snippet);
     var existingSnippet = that.snippetsOverlap(snippetIndices);
@@ -42,15 +42,15 @@ NG.Views.ArticleView = Backbone.View.extend({
     	// "Can't annotate over an annotation!"
 
     } else {
-    	    	console.log("here")
 
     	var newSnippet = new NG.Models.Snippet({start: snippetIndices[0],
-    																					 end: snippetIndices[1], 
-    																					 article_id: that.model.id}, 
-    																				{collection: that.snippets});
+																							end: snippetIndices[1], article_id: that.model.id}, 
+																							{collection: that.snippets});
 
     	var newSnippetView = new NG.Views.NewSnippetView({model: newSnippet,
-    																										event: event})// new annotation form
+    																										event: event,
+    																										article: that.model})// new annotation form
+    	
     	newSnippetView.render().$el.css({"position":"absolute",
     												 "top": event.pageY - 20 + "px",
     												 "left": event.pageX + "px"});
@@ -58,32 +58,10 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     	// render
 
-	    // var bodyText = ($(event.currentTarget).html());
-	    // var renderedSnippet = that.renderNewSnippet(snippet, snippetIndices, bodyText);
-	    // that.model.set('body', renderedSnippet);
-	    // var $articleBody = $(event.currentTarget)
-	    // $articleBody.html(renderedSnippet);
 
     }
   },
 
-  renderNewSnippet: function(snippet, snippetIndices, bodyText) {
-  	var that = this;
-  	var snippetLinkText = JST["articles/snippet_link"]({articleId: that.model.id,
-	    																								snippet: snippet});
-    var beginning = bodyText.slice(0, snippetIndices[0]);
-    var end = bodyText.slice(snippetIndices[1], bodyText.length);
-    var renderedSnippet = beginning + snippetLinkText.trim() + end;
-
-
-    // stringify html, delete between first and last indexes
-     // put in the template at first index
-     // return html string
-     // put into article-body
-
-    // make new snippet model upon annotation, not here
-    return renderedSnippet;
-  },
   snippetsOverlap: function(snippetIndices) {
     this.model.snippets.each(function(snippet){
     	var range = _.range(snippet.get('start'), snippet.get('end'));

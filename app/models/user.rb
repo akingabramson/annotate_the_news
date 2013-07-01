@@ -8,5 +8,5 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
 
-  has_many :annotations
+  has_many :annotations, inverse_of: :annotator
 end
