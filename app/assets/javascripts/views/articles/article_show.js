@@ -68,13 +68,6 @@ NG.Views.ArticleView = Backbone.View.extend({
     return false;
   },
 
-  // snippetLink: function(originalHTML, start, end) { 
-  // 	var snippetLink = $("<a>")
-  // 	snippetLink.addClass("snippet-link");
-  // 	var text = originalHTML.slice(start, end);
-  // 	snippetLink.html(text);
-  // 	return snippetLink
-  // },
 
   grabSnippet: function() {
 		var snippet = '';
