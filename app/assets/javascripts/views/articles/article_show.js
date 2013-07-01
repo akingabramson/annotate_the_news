@@ -35,14 +35,15 @@ NG.Views.ArticleView = Backbone.View.extend({
     	// "Can't annotate over an annotation!"
     } else {
 	    var bodyText = ($(event.currentTarget).html());
-	    var renderedSnippet = renderNewSnippet(snippet, bodyText);
+	    var renderedSnippet = that.renderNewSnippet(snippet, snippetIndices, bodyText);
 	    that.model.set('body', renderedSnippet);
 	    $(event.currentTarget).html(renderedSnippet);
 
     }
   },
 
-  renderNewSnippet: function(snippet, bodyText) {
+  renderNewSnippet: function(snippet, snippetIndices, bodyText) {
+  	var that = this;
   	var snippetLinkText = JST["articles/snippet_link"]({articleId: that.model.id,
 	    																								snippet: snippet});
     var beginning = bodyText.slice(0, snippetIndices[0]);
