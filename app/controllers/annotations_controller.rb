@@ -4,7 +4,7 @@ class AnnotationsController < ApplicationController
     if @annotation.save
       render json: @annotation
     else
-      render json: {}, status: 422
+      render json: @annotation.errors.full_messages, status: 422
     end
   end
 

@@ -9,11 +9,13 @@ class Snippet < ActiveRecord::Base
 
 
   def snippets_do_not_overlap
-    other_snippets = a.snippets
+    article = Article.find(article_id)
+    other_snippets = article.snippets
+    p article.snippets
     other_snippets.each do |snippet|
       range = (snippet.start..snippet.end).to_a
       if range.include?(self.start) || range.include?(self.end)
-        errors.add(:range, "Can't annotate over annother annotation.")
+        errors.add(:range, ": Can't annotate over annother annotation.")
       end
     end
   end
