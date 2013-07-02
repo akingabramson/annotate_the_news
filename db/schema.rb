@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130701174335) do
+ActiveRecord::Schema.define(:version => 20130702173818) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "annotator_id"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(:version => 20130701174335) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.integer  "iq",                     :default => 0
+    t.string   "username"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

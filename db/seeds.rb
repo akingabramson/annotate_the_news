@@ -36,7 +36,7 @@ articles = Article.create([
   }])
 
 users = User.create([
-  { username: "test"
+  { username: "test",
     email: "test@test.com",
     password: "testing123"
     }])

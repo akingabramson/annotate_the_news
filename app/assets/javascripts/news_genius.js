@@ -5,13 +5,12 @@ window.NG = {
   Routers: {},
   Store: {},
   initialize: function() {
-    var topBar;
-    NG.Store.CurrentUser = new NG.Models.CurrentUser()
+    NG.Store.CurrentUser = new NG.Models.CurrentUser();
+    topBar = new NG.Views.TopBar({el: $("#topbar")});
+    topBar.render();
 
-    topBar = new NG.Views.TopBar();
     NG.Router = new NG.Routers.Articles({$content: $("#main")});
-    Backbone.history.start();
-      
+    Backbone.history.start();  
   }
 };
 

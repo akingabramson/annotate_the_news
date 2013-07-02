@@ -1,10 +1,16 @@
 <div id="frontpage-link-wrapper" class="topbar-button"><a href="#" id="frontpage-link">Front Page</a></div>
-<div id="new-article-link-wrapper" class="topbar-button"> <a href="#/new_article" id="new-article-link">New Article</a> </div>
+<div id="new-article-link-wrapper" class="topbar-button"> <a href="#/new_article" id="new-article-link">New Article</a></div>
 <div id="searchbar-wrapper" class="topbar-button"><input type="text" id="searchBar" name="search[value]"></div>
-<div id="user-info" class="topbar-button">
 <% if (!!currentUser.id) { %>
-		<div id="profile-link-wrapper"><a href="#/profile" id="profile-link"><%=currentUser.get("username")%></a></div><div id="IQ-points"><%=currentUser.get("iq")%></div>
+		<div id="profile-link-wrapper" class="topbar-button">
+				<a href="#/profile" id="profile-link"><%=currentUser.get("username")%></a>
+		</div>
+		<div id="IQ-points" class="topbar-button">
+			IQ: <%=currentUser.get("iq")%>
+		</div>
+		<div id="logout-link-wrapper" class="topbar-button">
+			<a href="#/logout" id="logout-link">Logout</a>
+		</div>
 <% } else { %>
-	<div id="login-link-wrapper"><a href="#/login" id="login-link">Login</a></div>
+	<div id="login-link-wrapper" class="topbar-button"><a href="#/login" id="login-link">Login</a></div>
 <% } %>
-</div>
