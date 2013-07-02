@@ -25,7 +25,6 @@ NG.Routers.Articles = Backbone.Router.extend({
 			success: function(model, response) {
 				var articleView = new NG.Views.ArticleView({model: article});
 				that._swapContentView(articleView);
-				// make a new view
 			},
 			error: function(model, response) {
 				// render 404 page
@@ -39,7 +38,6 @@ NG.Routers.Articles = Backbone.Router.extend({
 	_swapContentView: function(newView) {
 		this.currentContentView && this.currentContentView.remove();
 		this.currentContentView = newView;
-
 		this.$content.html(newView.render().$el);
 	}
 

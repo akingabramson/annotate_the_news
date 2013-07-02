@@ -3,6 +3,7 @@ NG.Views.ArticlesIndex = Backbone.View.extend({
     render: function() {
   	var that = this;
   	var renderedTop = that.template();
+    
   	that.$el.html(renderedTop);
     var recommendedList = $("<ul>");
     recommendedList.addClass("recommended-list");
