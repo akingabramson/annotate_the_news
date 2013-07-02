@@ -4,6 +4,8 @@ NewsGenius::Application.routes.draw do
 
   devise_for :users
 
+  match "geniuses/:id" => "users#show"
+  
   resources :recommended_articles, only: :index
   resources :articles, :only => [:create, :update, :destroy, :show] do
     resources :snippets, :only => [:create, :update, :destroy, :show]

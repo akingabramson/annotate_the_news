@@ -19,8 +19,19 @@ NG.Views.ArticleView = Backbone.View.extend({
 	},
 
   showSnippet: function(event) {
+    var that = this;
+
     var snippetId = $(event.currentTarget).attr("data-id");
-    var shownSnippet = this.model.snippets.get(snippetId);
+    var shownSnippet = new NG.Models.Snippet({id: snippetId}, {collection: this.model.snippets});
+    shownSnippet.fetch({
+      success: function() {
+        var snippetView = new NG.Views.SnippetView({model: shownSnippet, 
+                      attributes: {event: event}
+                      });
+        console.log("here")
+        that.$el.append(snippetView.render().$el);
+      }
+    })
   },
 
   populateSnippets: function() {
@@ -53,7 +64,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 	popupAnnotate: function(event) {
     var that = this;
     that.removePopups()
-    
+
     NG.Store.snapSelectionToWord();
 
  		var snippet = that.grabSnippet();
@@ -72,6 +83,7 @@ NG.Views.ArticleView = Backbone.View.extend({
     this.$el.find(".annotate-button").remove();
     this.$el.find(".new-annotation-form").remove();
     this.$el.find(".popup").remove();
+    this.$el.find(".annotation-list")
   },
 
   renderSnippet: function(snippet, event) {

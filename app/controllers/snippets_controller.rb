@@ -17,6 +17,14 @@ class SnippetsController < ApplicationController
   end
 
   def show
+    @article = Article.find(params[:article_id])
+    @snippets = @article.snippets.select {|snippet| p snippet.id == params[:id].to_i}
+    @snippet = @snippets.first
+    if @snippet
+      render json: @snippet
+    else
+      render json: {}, status: 404
+    end
   end
 
 end
