@@ -13,7 +13,7 @@ NG.Views.NewSnippetView = Backbone.View.extend({
 		var that = this;
 		that.model.collection.add(that.model);
 
-		that.model.save({
+		that.model.save({}, {
 			success: function(savedSnippet) {
 				// that.linkifySnippet();
 				console.log("saved snippet")
@@ -21,15 +21,16 @@ NG.Views.NewSnippetView = Backbone.View.extend({
 				var annotation = new NG.Models.Annotation({body: annotationText, 
 																							snippet_id: that.model.id });
 				that.model.annotations.add(annotation);
-				annotation.save({
+				annotation.save({}, {
 					success: function() {
 						console.log("annotation saved")
-						that.article.save({
-						success: function() {
-							console.log("article saved");
-							that.remove();
-							}
-						});
+						that.remove();
+
+						// that.attributes.article.save({}, {
+						// success: function() {
+						// 	console.log("article saved");
+						// 	}
+						// });
 					},
 					error: function(resp) {
 					console.log(resp);
@@ -40,16 +41,5 @@ NG.Views.NewSnippetView = Backbone.View.extend({
 		});		
 	},
 
-	// linkifySnippet: function() {		
-	// 	var that = this;
-
-	// 	that.$el.remove();
-	// 	var $articleBody = $(that.event.currentTarget)
-
- //    var bodyText = $articleBody.html();
- //    var renderedSnippet = that.renderNewSnippet(bodyText);
- //    that.article.set('body', renderedSnippet);
- //    $articleBody.html(renderedSnippet);
-	// },
 
 })

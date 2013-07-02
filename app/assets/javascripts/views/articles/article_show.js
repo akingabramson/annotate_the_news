@@ -76,7 +76,8 @@ NG.Views.ArticleView = Backbone.View.extend({
   	var that = this
 
     var snippetIndices = that.grabSnippetIndices(snippet);
-    if (that.snippetsOverlap(snippetIndices)) {
+    console.log(that.snippetsOverlap(snippet));
+    if (that.snippetsOverlap(snippet)) {
       // "Can't annotate over an annotation!"
     	var renderedPopup = JST["articles/popup"]({x: 33, y: event.pageY});
     	that.$el.append(renderedPopup);
@@ -90,8 +91,8 @@ NG.Views.ArticleView = Backbone.View.extend({
 																							{collection: that.model.snippets});
 
     	var newSnippetView = new NG.Views.NewSnippetView({model: newSnippet,
-    																										event: event,
-    																										article: that.model});// new annotation form
+    																										attributes: {article: that.model},
+    																										});// new annotation form
     	
     	newSnippetView.render().$el.css({"position":"absolute",
     												           "top": event.pageY - 20 + "px",
@@ -101,26 +102,31 @@ NG.Views.ArticleView = Backbone.View.extend({
     }
   },
 
-  snippetsOverlap: function(snippetIndices) {
-    var sortedSnippets = _.sortBy(this.model.snippets.models,
-                                  function(model){return model.get("start")});
-    if (sortedSnippets.length === 0) {return};
-    var snippetsOverlap = false;
+  snippetsOverlap: function(snippet) {
+    var range = snippet.getRangeAt(0);
+    return range.endContainer.data !== range.startContainer.data
+    // var sortedSnippets = _.sortBy(this.model.snippets.models,
+    //                               function(model){return model.get("start")});
+    // if (sortedSnippets.length === 0) {return};
+    // var snippetsOverlap = false;
 
-    _.each(sortedSnippets, function(snippet){
-    	var start = snippet.get('start');
-      var end = snippet.get('end');
-      var range = _.range(start, end);
-      var snippetStart = snippetIndices[0];
-      var snippetEnd = snippetIndices[1];
-      console.log(range);
-      console.log(snippetStart);
-  		if (_.contains(range, snippetStart) || _.contains(range, snippetEnd)) {
-        console.log("here")
-  		 	snippetsOverlap = true;
-  		} 
-    });
-    return snippetsOverlap;
+    // _.each(sortedSnippets, function(snippet){
+    // 	var start = snippet.get('start');
+    //   var end = snippet.get('end');
+    //   var range = _.range(start, end + 1);
+    //   var snippetStart = snippetIndices[0];
+    //   var snippetEnd = snippetIndices[1];
+
+    //   console.log(range);
+    //   // console.log(snippetStart);
+    //   // console.log(snippetEnd);
+
+  		// if (_.contains(range, snippetStart) || _.contains(range, snippetEnd)) {
+    //     console.log("here")
+  		//  	snippetsOverlap = true;
+  		// } 
+    // });
+    // return snippetsOverlap;
   },
 
 
@@ -144,8 +150,10 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     if (!!earlierSnippet) {
       var earlierSnippetEnd = earlierSnippet.get("end");
-      start = earlierSnippetEnd + range.startOffset
+
+      start = earlierSnippetEnd + range.startOffset;
       end = earlierSnippetEnd + range.endOffset;
+      console.log(earlierSnippetEnd);
     } else {
       start = range.startOffset;
       end = range.endOffset;
