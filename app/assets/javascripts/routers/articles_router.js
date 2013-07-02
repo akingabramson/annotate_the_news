@@ -4,7 +4,8 @@ NG.Routers.Articles = Backbone.Router.extend({
   },
   routes: {
 		"": "homepage",
-		"articles/:id": "showArticle"
+		"articles/:id": "showArticle",
+		"#/new_article": "newArticle",
 	},
 
 	homepage: function() {
@@ -33,7 +34,11 @@ NG.Routers.Articles = Backbone.Router.extend({
 
 	},
 
-
+	newArticle: function() {
+		var that = this;
+		var newArticle = new NG.Models.Article();
+		var newArticleView = new NG.Views.NewArticleView({model: newArticle});
+	},
 
 	_swapContentView: function(newView) {
 		this.currentContentView && this.currentContentView.remove();
