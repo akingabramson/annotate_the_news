@@ -37,10 +37,20 @@ NG.Routers.Articles = Backbone.Router.extend({
 	newArticle: function() {
 		var that = this;
 		var newArticle = new NG.Models.Article();
-		var topics = new NG.Collections.Topics();
+		$.ajax({
+			url: "topics/",
+			type: "get",
+			success: function(topics) {
+				var newArticleView = new NG.Views.NewArticleView({model: newArticle, attributes: {topics: topics}});
+				that._swapContentView(newArticleView);
+
+			},
+			error: function(response) {
+				console.log("not connected to the internet");
+			},
+		})
+
 		
-		var newArticleView = new NG.Views.NewArticleView({model: newArticle, collection:topics});
-		newArticleView.render();
 	},
 
 	_swapContentView: function(newView) {

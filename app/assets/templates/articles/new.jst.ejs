@@ -1,4 +1,6 @@
-<form>
+<h3>Submit Article</h3>
+
+<form id="newArticleForm">
 	<label for="newArticleUrl">Link:</label>
 	<input type="text" id="newArticleUrl" name="article[url] "value="<%= newArticle.escape('url')%>" >
 	<br />
@@ -11,12 +13,17 @@
 	<input type="text" id="newArticleSource" name="article[news_source] "value="<%= newArticle.escape('news_source')%>">
 	<br />
 
-	<label for="newArticleBody">Body:</label>
+	<label for="newArticleBody">Body:</label><br />
 	<textarea id="newArticleBody" name="article[body]"><%=newArticle.escape("body")%></textarea>
+	<br />
 
-	
+	<label for="newArticleTopic">Topic:</label>
+	<select name="article[topic_id]" id="newArticleTopic">
+		<% _.each(topics, function(topic){ %>
+			<option value="<%=topic.id%>"><%=topic.name%></option>
+		<% }) %>
+	</select>
+	<br/>
 
-
-
-
+	<input id="submitArticle" type="submit" value="Post Article">
 </form>

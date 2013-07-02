@@ -8,5 +8,14 @@ class ArticlesController < ApplicationController
       render json: {}, status: 404
     end
   end
+
+  def create
+    @article = current_user.submitted_articles.build(params[:article])
+    if @article.save
+      render json: @article
+    else
+      render json: @article.errors.full_messages, status: 422
+    end
+  end
   
 end

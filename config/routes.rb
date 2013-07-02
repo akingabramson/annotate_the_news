@@ -7,6 +7,7 @@ NewsGenius::Application.routes.draw do
   match "geniuses/:id" => "Users#show"
   match "currentuser/" => "CurrentUsers#show"
   
+  resources :topics, only: :index
   resources :recommended_articles, only: :index
   resources :articles, :only => [:create, :update, :destroy, :show] do
     resources :snippets, :only => [:create, :update, :destroy, :show]
