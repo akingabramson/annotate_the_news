@@ -1,5 +1,7 @@
 class SnippetsController < ApplicationController
   def create
+    # authenticate_user!
+    
     @snippet = Snippet.new(params[:snippet])
     
     if @snippet.save

@@ -1,4 +1,6 @@
 class AnnotationsController < ApplicationController
+  before_filter :authenticate_user!
+  
   def create
     @annotation = current_user.annotations.build(params[:annotation])
     if @annotation.save
