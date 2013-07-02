@@ -3,6 +3,7 @@ window.NG = {
   Collections: {},
   Views: {},
   Routers: {},
+  Store: {},
   initialize: function() {
     NG.Router = new NG.Routers.Articles({$content: $("#main")});
     Backbone.history.start();

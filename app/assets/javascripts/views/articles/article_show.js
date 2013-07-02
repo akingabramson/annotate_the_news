@@ -21,7 +21,6 @@ NG.Views.ArticleView = Backbone.View.extend({
   showSnippet: function(event) {
     var snippetId = $(event.currentTarget).attr("data-id");
     var shownSnippet = this.model.snippets.get(snippetId);
-    console.log(shownSnippet)
   },
 
   populateSnippets: function() {
@@ -54,8 +53,11 @@ NG.Views.ArticleView = Backbone.View.extend({
 	popupAnnotate: function(event) {
     var that = this;
     that.removePopups()
+    
+    NG.Store.snapSelectionToWord();
 
  		var snippet = that.grabSnippet();
+
     if (String(snippet).length <= 0) return;
 
     var renderedPopup = JST["articles/annotate_popup"]({x: event.pageX, y: (event.pageY-20)})
@@ -76,7 +78,6 @@ NG.Views.ArticleView = Backbone.View.extend({
   	var that = this
 
     var snippetIndices = that.grabSnippetIndices(snippet);
-    console.log(that.snippetsOverlap(snippet));
     if (that.snippetsOverlap(snippet)) {
       // "Can't annotate over an annotation!"
     	var renderedPopup = JST["articles/popup"]({x: 33, y: event.pageY});
@@ -105,28 +106,6 @@ NG.Views.ArticleView = Backbone.View.extend({
   snippetsOverlap: function(snippet) {
     var range = snippet.getRangeAt(0);
     return range.endContainer.data !== range.startContainer.data
-    // var sortedSnippets = _.sortBy(this.model.snippets.models,
-    //                               function(model){return model.get("start")});
-    // if (sortedSnippets.length === 0) {return};
-    // var snippetsOverlap = false;
-
-    // _.each(sortedSnippets, function(snippet){
-    // 	var start = snippet.get('start');
-    //   var end = snippet.get('end');
-    //   var range = _.range(start, end + 1);
-    //   var snippetStart = snippetIndices[0];
-    //   var snippetEnd = snippetIndices[1];
-
-    //   console.log(range);
-    //   // console.log(snippetStart);
-    //   // console.log(snippetEnd);
-
-  		// if (_.contains(range, snippetStart) || _.contains(range, snippetEnd)) {
-    //     console.log("here")
-  		//  	snippetsOverlap = true;
-  		// } 
-    // });
-    // return snippetsOverlap;
   },
 
 
@@ -139,6 +118,8 @@ NG.Views.ArticleView = Backbone.View.extend({
 	  } else if(document.selection){
 	    snippet = document.selection.createRange().text;
 	  }
+    
+
 	  return snippet
   },
 
@@ -153,7 +134,6 @@ NG.Views.ArticleView = Backbone.View.extend({
 
       start = earlierSnippetEnd + range.startOffset;
       end = earlierSnippetEnd + range.endOffset;
-      console.log(earlierSnippetEnd);
     } else {
       start = range.startOffset;
       end = range.endOffset;
