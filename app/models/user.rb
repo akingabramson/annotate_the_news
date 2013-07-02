@@ -9,5 +9,6 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username
   validates :username, presence: true, uniqueness: true
 
+  has_many :submitted_articles, class_name: "Article", foreign_key: :submitter_id, inverse_of: :submitter
   has_many :annotations, foreign_key: :annotator_id, inverse_of: :annotator
 end

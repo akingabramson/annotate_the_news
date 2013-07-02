@@ -13,7 +13,7 @@ articles = Article.create([
   recommended: true,
   submitter_id: 1,
   title: "This is some title ain't it.",
-  topic_id: 1,
+  topic_id: 3,
   url: "www.google.com"
   },
   {
@@ -22,7 +22,7 @@ articles = Article.create([
   recommended: true,
   submitter_id: 1,
   title: "Politics, politics, and more politics",
-  topic_id: 1,
+  topic_id: 2,
   url: "www.google.com"
   },
   {
@@ -31,7 +31,7 @@ articles = Article.create([
   recommended: true,
   submitter_id: 1,
   title: "Health Paper",
-  topic_id: 2,
+  topic_id: 1,
   url: "www.health.com"
   }])
 
@@ -40,3 +40,8 @@ users = User.create([
     email: "test@test.com",
     password: "testing123"
     }])
+
+topics = Topic.create([
+  {name: "Sports"},
+  {name: "Politics"},
+  {name: "Economics"}])

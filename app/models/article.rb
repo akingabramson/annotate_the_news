@@ -8,11 +8,9 @@ class Article < ActiveRecord::Base
   # belongs_to :topic
 
   has_many :snippets
+  belongs_to :topic
+  belongs_to :submitter, class_name: "User", :foreign_key => :submitter_id
 
-
-  def as_json(options = {})
-    super(options.merge({include: {snippets: {include: :annotations}}}))
-  end
 
 
 end

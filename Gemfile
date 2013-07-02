@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 
-gem 'bcrypt-ruby', :require => "bcrypt"
-gem 'sqlite3'
-
 group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'sass-rails',   '~> 3.2.3'
@@ -18,9 +15,11 @@ group :development do
   gem 'pry-rails'
 end
 
-gem 'jquery-rails'
-gem 'underscore-rails'
 gem 'backbone-on-rails'
+gem 'bcrypt-ruby', :require => "bcrypt"
 gem 'devise'
+gem 'jquery-rails'
+gem 'pg'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
+gem 'underscore-rails'

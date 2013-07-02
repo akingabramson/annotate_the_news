@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   def show
-    @article = Article.find(params[:id]);
+    @article = Article.find(params[:id], include: {snippets: :annotations})
     if @article
       render json: @article
       # with associated snippets
