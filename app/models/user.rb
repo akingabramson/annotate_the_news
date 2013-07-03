@@ -7,11 +7,11 @@ class User < ActiveRecord::Base
   has_many :annotations, foreign_key: :annotator_id, inverse_of: :annotator
 
   def password=(password)
-    self.password_digest = BCrypt::Password.create(password)
+    password_digest = BCrypt::Password.create(password)
   end
   
   def verify_password(password)
-    BCrypt::Password.new(self.password_digest) == password
+    BCrypt::Password.new(password_digest) == password
   end
 
   def reset_session_token!

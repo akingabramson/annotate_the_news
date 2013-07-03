@@ -1,7 +1,7 @@
 module ApplicationHelper
   def require_login
     unless logged_in?
-      flash[:error]
+      flash[:error] = "Not logged in."
       render json: "Not logged in.", status: 401
     end
   end

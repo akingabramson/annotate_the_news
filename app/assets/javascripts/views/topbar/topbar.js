@@ -23,7 +23,6 @@ NG.Views.TopBar = Backbone.View.extend({
 
 		NG.Store.CurrentUser.fetch({
 			success: function() {
-				console.log(NG.Store.CurrentUser)
 				renderTopBar(NG.Store.CurrentUser)},
 			error: function(){
 				console.log("Not logged in")
@@ -46,18 +45,19 @@ NG.Views.TopBar = Backbone.View.extend({
 			data: data,
 			success: function(resp) {
 				console.log(resp)
-				if (resp.success) {
-					AUTH_TOKEN = resp.auth_token;
-					console.log("logged in")
-					that.render();
-				} else {
-					// append errors to bottom of form.
-					var $errorMessage = $("<div>");
-					$errorMessage.attr("id", "login-error");
-					$errorMessage.html("Invalid username or password.");
-					that.$el.find("#login-div").append($errorMessage);
-				}
+				AUTH_TOKEN = resp.auth_token;
+				console.log("logged in")
+				that.render();
+			},
+
+			error: function(resp) {
+				// append errors to bottom of form.
+				var $errorMessage = $("<div>");
+				$errorMessage.attr("id", "login-error");
+				$errorMessage.html("Invalid username or password.");
+				that.$el.find("#login-div").append($errorMessage);
 			}
+			
 		});
 	},
 
@@ -133,12 +133,18 @@ NG.Views.TopBar = Backbone.View.extend({
 
 	logout: function(event) {
 		event.preventDefault();
+		console.log("Currently loggin out");
 		$.ajax({
-			url: "/users/sign_out",
+			url: "/session",
 			type: "delete",
-			success: function() {
+			success: function(resp) {
+				console.log(resp)
 				console.log("logged out")
 				topBar.render();
+			},
+			error: function(resp) {
+				console.log("didn't log out");
+				console.log(resp);
 			}
 		});
 	},
