@@ -12,8 +12,10 @@ class ArticlesController < ApplicationController
   def create
     @article = current_user.submitted_articles.build(params[:article])
     if @article.save
+      flash[:article_success] = "Article created."
       render json: @article
     else
+      flash[:article_success] = "Article could not be created."
       render json: @article.errors.full_messages, status: 422
     end
   end
