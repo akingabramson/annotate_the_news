@@ -1,22 +1,24 @@
-class SessionsController < Devise::SessionsController
-
+class SessionsController < ApplicationController
   def create
-    resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
-    sign_in_and_redirect(resource_name, resource)
-  end
- 
-  def sign_in_and_redirect(resource_or_scope, resource=nil)
-    scope = Devise::Mapping.find_scope!(resource_or_scope)
-    resource ||= resource_or_scope
-    sign_in(scope, resource) unless warden.user(scope) == resource
-    return render :json => {:success => true}
-  end
- 
-  def failure
-    return render :json => {:success => false, :errors => ["Login failed."]}
+    @user = User.find_by(params[:user][:username])
+    if @user && @user.verify_password(params[:user][:password])
+      session[:session_token] = @user.reset_session_token!
+      render json: @user
+    else
+      render json: "Username and password combination does not match.", status: 422
+    end
   end
 
   def destroy
-    super
+    if logged_in?
+      current_user.reset_session_token!
+      session[:session_token] = nil
+      render json: "Logout successful"
+    else
+      render json: "Wasn't logged in in the first place.", status: 422
+    end
   end
+
+
+  
 end

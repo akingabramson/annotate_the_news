@@ -2,9 +2,9 @@ NewsGenius::Application.routes.draw do
 
   root :to => "root#root"
 
-  devise_for :users, :controllers => {registrations: 'registrations', sessions: 'sessions'}
+  resources :users, only: [:create, :destroy, :update]
+  resource :session, only: [:create, :destroy]
 
-  match "geniuses/:id" => "Users#show"
   
   resource :current_user, :only => [:show]
   resources :topics, only: :index

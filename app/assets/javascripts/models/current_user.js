@@ -1,3 +1,3 @@
 NG.Models.CurrentUser = Backbone.Model.extend({
-	urlRoot: "current_user/"
+	url: "current_user/"
 })

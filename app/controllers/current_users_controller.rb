@@ -8,6 +8,4 @@ class CurrentUsersController < ApplicationController
     end
   end
 
-  
-
 end

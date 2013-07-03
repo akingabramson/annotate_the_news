@@ -35,11 +35,6 @@ articles = Article.create([
   url: "www.health.com"
   }])
 
-users = User.create([
-  { username: "test",
-    email: "test@test.com",
-    password: "testing123"
-    }])
 
 topics = Topic.create([
   {name: "Sports"},

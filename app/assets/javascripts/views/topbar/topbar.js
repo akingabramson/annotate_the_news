@@ -23,8 +23,12 @@ NG.Views.TopBar = Backbone.View.extend({
 
 		NG.Store.CurrentUser.fetch({
 			success: function() {
+				console.log(NG.Store.CurrentUser)
 				renderTopBar(NG.Store.CurrentUser)},
-			error: renderTopBar
+			error: function(){
+				console.log("Not logged in")
+				renderTopBar(new NG.Models.User());
+			}
 		})
 	},
 
@@ -34,13 +38,17 @@ NG.Views.TopBar = Backbone.View.extend({
 		that.$el.find("#login-error").remove();
 
 		var data = that.$el.find("#new_session").serialize();
+		console.log(data);
+
 		$.ajax({
-			url: "/users/sign_in",
+			url: "/session",
 			type: "post",
 			data: data,
 			success: function(resp) {
-				console.log(resp.success)
+				console.log(resp)
 				if (resp.success) {
+					AUTH_TOKEN = resp.auth_token;
+					console.log("logged in")
 					that.render();
 				} else {
 					// append errors to bottom of form.
@@ -131,8 +139,8 @@ NG.Views.TopBar = Backbone.View.extend({
 			success: function() {
 				console.log("logged out")
 				topBar.render();
-			},
-		})
+			}
+		});
 	},
 
 });
