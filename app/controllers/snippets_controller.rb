@@ -1,7 +1,7 @@
 class SnippetsController < ApplicationController
-  def create
-    # authenticate_user!
-    
+  before_filter :authenticate_user!, only: [:create, :update, :destroy]
+
+  def create    
     @snippet = Snippet.new(params[:snippet])
     
     if @snippet.save

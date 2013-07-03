@@ -57,7 +57,7 @@ NG.Routers.Articles = Backbone.Router.extend({
 		this.currentContentView && this.currentContentView.remove();
 		this.currentContentView = newView;
 		this.$content.html(newView.render().$el);
-	}
+	},
 
 
 });

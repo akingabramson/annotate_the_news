@@ -1,15 +1,137 @@
 NG.Views.TopBar = Backbone.View.extend({
+	initialize: function() {
+		this.loginClicked = false;
+		this.signupClicked = false;
+		this.$el.addClass("topbar")
+	},
 	template: JST["topbar/topbar"],
+	events: {
+		"click #logout-link": "logout",
+		"click #login-link": "toggleLogin",
+		"click #signup-link": "toggleSignUp",
+		"click #login-button": "login",
+		"click #signup-button": "signup",
+	},
+
 	render: function() {
-		var renderTopBar = function() {
-			var renderedBar = that.template({currentUser: NG.Store.CurrentUser});
-			$(that.el).html(renderedBar);
-		}
 		var that = this;
 
+		var renderTopBar = function(currentUser) {
+			var renderedBar = that.template({currentUser: currentUser});
+			$(that.el).html(renderedBar);
+		}
+
 		NG.Store.CurrentUser.fetch({
-			success: renderTopBar,
+			success: function() {
+				renderTopBar(NG.Store.CurrentUser)},
 			error: renderTopBar
+		})
+	},
+
+	login: function(event) {
+		event.preventDefault();
+		var that = this;
+		that.$el.find("#login-error").remove();
+
+		var data = that.$el.find("#new_session").serialize();
+		$.ajax({
+			url: "/users/sign_in",
+			type: "post",
+			data: data,
+			success: function(resp) {
+				console.log(resp.success)
+				if (resp.success) {
+					that.render();
+				} else {
+					// append errors to bottom of form.
+					var $errorMessage = $("<div>");
+					$errorMessage.attr("id", "login-error");
+					$errorMessage.html("Invalid username or password.");
+					that.$el.find("#login-div").append($errorMessage);
+				}
+			}
+		});
+	},
+
+	signup: function(event) {
+		event.preventDefault();
+		var that = this;
+		that.$el.find("#signup-error").remove();
+
+		var data = that.$el.find("#new_user").serialize();
+		$.ajax({
+			url: "/users",
+			type: "post",
+			data: data,
+			success: function(resp) {
+				console.log(resp);
+				that.render()
+			},
+			error: function(response) {
+				var $errorMessage = $("<div>");
+				$errorMessage.attr("id", "signup-error");
+				$errorMessage.html(response.responseText);
+
+				that.$el.find("#signup-div").append($errorMessage);
+			}
+			// append errors to bottom of form.
+
+		})
+
+
+	},
+
+	toggleLogin: function(event) {
+		event.preventDefault();
+		var $signupDiv = this.$el.find("#signup-div");
+		var $loginDiv = this.$el.find('#login-div');
+
+		if (this.signupClicked) {
+			$signupDiv.stop().slideUp(0);
+			$signupDiv.toggleClass("hidden");
+			this.signupClicked = false;
+		}
+
+		if (this.loginClicked) {
+			$loginDiv.stop().slideUp(50);
+			this.loginClicked = false;
+		} else {
+			$loginDiv.stop().slideDown(50);
+			this.loginClicked = true;
+		}
+		$loginDiv.toggleClass("hidden");
+	},
+
+	toggleSignUp: function(event) {
+		event.preventDefault();
+		var $signupDiv = this.$el.find("#signup-div");
+		var $loginDiv = this.$el.find('#login-div');
+
+		if (this.loginClicked) {
+			$loginDiv.stop().slideUp(0);
+			$loginDiv.toggleClass("hidden");
+			this.loginClicked = false;
+		}
+
+		if (this.signupClicked) {
+			$signupDiv.stop().slideUp(50);
+			this.signupClicked = false;
+		} else {
+			$signupDiv.stop().slideDown(50);
+			this.signupClicked = true;
+		}
+		$signupDiv.toggleClass("hidden");
+	},
+
+	logout: function(event) {
+		event.preventDefault();
+		$.ajax({
+			url: "/users/sign_out",
+			type: "delete",
+			success: function() {
+				console.log("logged out")
+				topBar.render();
+			},
 		})
 	},
 

@@ -7,4 +7,7 @@ class CurrentUsersController < ApplicationController
       render json: {}, status: 404
     end
   end
+
+  
+
 end

@@ -2,11 +2,11 @@ NewsGenius::Application.routes.draw do
 
   root :to => "root#root"
 
-  devise_for :users
+  devise_for :users, :controllers => {registrations: 'registrations', sessions: 'sessions'}
 
   match "geniuses/:id" => "Users#show"
-  match "currentuser/" => "CurrentUsers#show"
   
+  resource :current_user, :only => [:show]
   resources :topics, only: :index
   resources :recommended_articles, only: :index
   resources :articles, :only => [:create, :update, :destroy, :show] do

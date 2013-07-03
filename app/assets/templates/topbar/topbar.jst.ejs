@@ -1,16 +1,23 @@
 <div id="frontpage-link-wrapper" class="topbar-button"><a href="#" id="frontpage-link">Home</a></div>
 <div id="new-article-link-wrapper" class="topbar-button"> <a href="#/new_article" id="new-article-link">New Article</a></div>
 <div id="searchbar-wrapper" class="topbar-button"><input type="text" id="searchBar" name="search[value]"></div>
-<% if (!!currentUser.id) { %>
-		<div id="profile-link-wrapper" class="topbar-button">
-				<a href="#/profile" id="profile-link"><%=currentUser.get("username")%></a>
+<div id="user-info">
+	<% if (!!currentUser.id) { %>
+			<div id="profile-link-wrapper" class="topbar-button">
+					<a href="#/profile" id="profile-link"><%=currentUser.get("username")%></a>
+			</div>
+			<div id="IQ-points" class="topbar-button">
+				IQ: <%=currentUser.get("iq")%>
+			</div>
+			<div id="logout-link-wrapper" class="topbar-button">
+				<a href="#" id="logout-link">Logout</a>
+			</div>
+	<% } else { %>
+		<div id="login-link-wrapper" class="topbar-button"><a href="#/login" id="login-link">Login</a>
+			<%= JST["sessions/login"]() %>
 		</div>
-		<div id="IQ-points" class="topbar-button">
-			IQ: <%=currentUser.get("iq")%>
+		<div id="signup-link-wrapper" class="topbar-button"><a href="#/signup" id="signup-link">Sign Up</a>
+			<%= JST["users/signup"]() %>
 		</div>
-		<div id="logout-link-wrapper" class="topbar-button">
-			<a href="#/logout" id="logout-link">Logout</a>
-		</div>
-<% } else { %>
-	<div id="login-link-wrapper" class="topbar-button"><a href="#/login" id="login-link">Login</a></div>
-<% } %>
+	<% } %>
+</div>

@@ -1,4 +1,6 @@
 class ArticlesController < ApplicationController
+  before_filter :authenticate_user!, only: [:create]
+
   def show
     @article = Article.find(params[:id], include: {snippets: :annotations})
     if @article

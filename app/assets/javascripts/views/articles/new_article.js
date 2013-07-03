@@ -20,11 +20,13 @@ NG.Views.NewArticleView = Backbone.View.extend({
 			type: "post",
 			data: data,
 			success: function(object) {
-				console.log(document.cookie);
-				// NG.Router.navigate("#articles/"+object.id);
+				NG.Store.ArticleSaved = true;
+				console.log("#articles/"+ object.id);
+				NG.Router.navigate("#articles/"+ object.id, {trigger: true});
 			},
 			error: function(object, xhrf) {
 				console.log(object)
+				// re-render the page
 
 			},
 		})

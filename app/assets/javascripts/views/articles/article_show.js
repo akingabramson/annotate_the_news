@@ -15,6 +15,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     that.$el.html(renderedArticle);
     that.populateSnippets();
+    NG.Store.ArticleSaved = false;
 		return that
 	},
 

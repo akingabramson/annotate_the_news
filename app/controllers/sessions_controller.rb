@@ -1,30 +1,22 @@
-class SessionsController < ApplicationController
-
-  def new
-    @user = User.new
-  end
+class SessionsController < Devise::SessionsController
 
   def create
-    @user = User.find_by_username(params[:user][:username])
-
-    if @user && @user.verify_password(params[:user][:password])
-      session[:token] = @user.reset_session_token!
-      redirect_to root_url
-    else
-      @user ||= User.new
-      flash[:error] = "Couldn't find user"
-      render :new
-    end
+    resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
+    sign_in_and_redirect(resource_name, resource)
+  end
+ 
+  def sign_in_and_redirect(resource_or_scope, resource=nil)
+    scope = Devise::Mapping.find_scope!(resource_or_scope)
+    resource ||= resource_or_scope
+    sign_in(scope, resource) unless warden.user(scope) == resource
+    return render :json => {:success => true}
+  end
+ 
+  def failure
+    return render :json => {:success => false, :errors => ["Login failed."]}
   end
 
   def destroy
-    if logged_in?
-      session[:token] = nil
-      @@current_user.reset_session_token!
-      flash[:success] = "Logged out"
-    else
-      flash[:error] = "Not logged in"
-    end
-    redirect_to new_session_url
+    super
   end
 end

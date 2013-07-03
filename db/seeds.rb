@@ -14,7 +14,7 @@ articles = Article.create([
   submitter_id: 1,
   title: "This is some title ain't it.",
   topic_id: 3,
-  url: "www.google.com"
+  url: "www.gmail.com"
   },
   {
   body: "This is some more body.  Please let it be more interesting.",

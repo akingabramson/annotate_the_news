@@ -1,5 +1,6 @@
 .topbar {
 	float:top;
+	width: auto;
 }
 .topbar-button {
 	float:left;
@@ -8,4 +9,9 @@
 
 #frontpage_title {
 text-align: center;
+}
+
+#user-info {
+	float:right;
+	margin-right: 200px;
 }
