@@ -1,7 +1,8 @@
 NG.Views.NewArticleView = Backbone.View.extend({
 	template: JST["articles/new"],
 	events: {
-		"click #submitArticle": "submitArticle"
+		"click #submitArticle": "checkUser",
+		"click #newArticleForm": "removePopups",
 	},
 	render: function() {
 		var that = this;
@@ -10,8 +11,24 @@ NG.Views.NewArticleView = Backbone.View.extend({
 		that.$el.html(renderedForm);
 		return that
 	},
-	submitArticle: function(event) {
+
+	checkUser: function(event) {
 		event.preventDefault();
+		var that = this;
+
+		NG.Store.CurrentUser.fetch({
+      success: function(){
+        that.submitArticle(event)
+      },
+      error: function() {
+        var loginPopup = JST["popups/popup"]({x: 33, y: event.pageY, 
+                                            text: "Must be logged in to post an article."});
+        that.$el.append(loginPopup);
+      }
+     });
+	},
+
+	submitArticle: function(event) {
 		var that = this;
 		var data = that.$el.find("#newArticleForm").serialize();
 
@@ -31,4 +48,9 @@ NG.Views.NewArticleView = Backbone.View.extend({
 			},
 		})
 	},
+
+	removePopups: function() {
+		$(".popup").remove();
+	}
+		
 })

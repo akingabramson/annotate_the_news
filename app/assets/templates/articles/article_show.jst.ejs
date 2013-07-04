@@ -1,6 +1,6 @@
 <% if (NG.Store.ArticleSaved) {%>
 	<div id="article-saved">Article Posted.</div>
 <% } %>
-<a href="<%=article.escape('url')%>" class="article-link"><h3 class="article-show-title"><%= article.escape("title") %> </h3></a>
+<h3 class="article-show-title"><a href="<%=article.escape('url')%>" class="article-link"><%= article.escape("title") %></a></h3>
 <p class="article-body"> <%= article.escape("body")%></p>
 <br />

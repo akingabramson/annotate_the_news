@@ -6,7 +6,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 	template: JST["articles/article_show"],
 	events: {
     "mouseup .article-body": "popupAnnotate",
-    "click body" : "removePopups",
+    "click #main" : "removePopups",
     "click .snippet-link": "showSnippet"
   },
 	render: function() {
@@ -80,10 +80,7 @@ NG.Views.ArticleView = Backbone.View.extend({
   },
 
   removePopups: function() {
-    // this.$el.find(".annotate-button").remove();
-    // this.$el.find(".new-annotation-form").remove();
     this.$el.find(".popup").remove();
-    // this.$el.find(".annotation-list").remove();
   },
 
   checkSnippet: function(snippet, event) {
