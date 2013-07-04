@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require underscore
 //= require backbone
+//= require select2
 //= require news_genius
 //= require_tree ../templates
 //= require_tree ./models

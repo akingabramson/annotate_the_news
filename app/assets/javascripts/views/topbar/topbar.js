@@ -2,6 +2,7 @@ NG.Views.TopBar = Backbone.View.extend({
 	initialize: function() {
 		this.loginClicked = false;
 		this.signupClicked = false;
+		this.selectedResult = -1;
 		this.$el.addClass("topbar")
 	},
 	template: JST["topbar/topbar"],
@@ -12,6 +13,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		"click #login-button": "login",
 		"click #signup-button": "signup",
 		"keydown #searchBar": "search",
+		"select .search-result": "selectResult",
 		// click submit button, enter button sends form? 
 	},
 
@@ -25,43 +27,53 @@ NG.Views.TopBar = Backbone.View.extend({
 
 		NG.Store.CurrentUser.fetch({
 			success: function() {
-				renderTopBar(NG.Store.CurrentUser)},
+				renderTopBar(NG.Store.CurrentUser);
+				that.initSearchBar();
+			},
 			error: function(){
 				console.log("Not logged in")
 				renderTopBar(new NG.Models.User());
+				that.initSearchBar();
 			}
 		})
 	},
 
-	search: function(event) {
+	initSearchBar: function() {
 		var that = this;
-		this.$el.find("#search-dropdown").remove();
-		var query;
-		if (event.keyCode == 13) {
-			query = $.param({q: $(event.currentTarget).val()});
 
-		} else if (event.keyCode == 27) {
-		} else {
-			query = $.param({q: $(event.currentTarget).val(),
-											limit: 5});
-			$.ajax({
-			url: "/search",
-			data: query,
-			success: function(response) {
-				var $renderedResults = $(JST["searches/search_results"]({results: response}));
-				var wrapper = that.$el.find("#searchbar-wrapper")
-				console.log($renderedResults)
-				wrapper.append($renderedResults);
-				$renderedResults.toggleClass("hidden");
-				$renderedResults.stop().slideDown(50);
-
-
-				// toggleclass selected when down or up arrow
-			},
+		$("#search-bar").select2({
+			placeholder: "Search by title, body, source",
+			minimumInputLength: 3,
+			id: function(article){return {id: article.id};},
+			ajax: {
+				quietMillis: 100,
+        url: "/search",
+	      data: function(term) {
+          return {q: term, limit: 5};
+	      },
+	      dataType: "json",
+	      results: function(data, page) {
+	      	var results = [];
+	      	$.each(data, function(index, item){
+            results.push({
+              id: item.id,
+              text: item.news_source + "-  " + item.title,
+            });
+           });
+	      	// var renderedData = JST["searches/search_results"]({results: data});
+          return {results: results};
+        }
+	    },
+	    formatResult: function(article){
+	    	return JST["searches/search_results"]({article: article});
+	    },
 		});
-		}
 
-
+		$("#search-bar").on("select2-selecting", function(event) {
+			if (event.object.id != 0) {
+				Backbone.history.navigate("#articles/"+ event.object.id, {trigger: true});
+			}
+		});
 	},
 
 	login: function(event) {
@@ -116,8 +128,6 @@ NG.Views.TopBar = Backbone.View.extend({
 			// append errors to bottom of form.
 
 		})
-
-
 	},
 
 	toggleLogin: function(event) {
