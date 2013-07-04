@@ -13,4 +13,8 @@ class Article < ActiveRecord::Base
     boolean :recommended
   end
 
+  def as_json(options = {})
+    super(options.merge({:include => :snippets}))
+  end
+
 end

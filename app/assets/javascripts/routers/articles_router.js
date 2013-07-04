@@ -24,6 +24,7 @@ NG.Routers.Articles = Backbone.Router.extend({
 		var article = new NG.Models.Article({id: id});
 		article.fetch({
 			success: function(model, response) {
+				console.log(article.snippets)
 				var articleView = new NG.Views.ArticleView({model: article});
 				that._swapContentView(articleView);
 			},

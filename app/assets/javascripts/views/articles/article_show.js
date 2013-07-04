@@ -1,12 +1,12 @@
 NG.Views.ArticleView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model.snippets, "all", this.render);
-    // this.listenTo(this.model, "sync", this.render);
 	},
+  
 	template: JST["articles/article_show"],
 	events: {
     "mouseup .article-body": "popupAnnotate",
-    "click #main" : "removePopups",
+    "click body" : "removePopups",
     "click .snippet-link": "showSnippet"
   },
 	render: function() {
@@ -39,6 +39,7 @@ NG.Views.ArticleView = Backbone.View.extend({
     var bodyText = (that.model.escape("body"));
     var finalBody = "";
     var lastSnippetEnd = 0;
+
     var sortedSnippets = _.sortBy(that.model.snippets.models,
                                   function(model){return model.get("start")});
 

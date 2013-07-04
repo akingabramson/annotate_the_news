@@ -11,7 +11,6 @@ class Snippet < ActiveRecord::Base
   def snippets_do_not_overlap
     article = Article.find(article_id)
     other_snippets = article.snippets
-    p article.snippets
     other_snippets.each do |snippet|
       range = (snippet.start..snippet.end).to_a
       if range.include?(self.start) || range.include?(self.end)
