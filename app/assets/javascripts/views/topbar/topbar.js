@@ -11,6 +11,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		"click #signup-link": "toggleSignUp",
 		"click #login-button": "login",
 		"click #signup-button": "signup",
+		// click submit button, enter button sends form? 
 	},
 
 	render: function() {
@@ -20,7 +21,7 @@ NG.Views.TopBar = Backbone.View.extend({
 			var renderedBar = that.template({currentUser: currentUser});
 			$(that.el).html(renderedBar);
 		}
-
+		
 		NG.Store.CurrentUser.fetch({
 			success: function() {
 				renderTopBar(NG.Store.CurrentUser)},

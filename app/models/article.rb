@@ -8,6 +8,9 @@ class Article < ActiveRecord::Base
   belongs_to :topic
   belongs_to :submitter, class_name: "User", :foreign_key => :submitter_id
 
-
+  searchable do
+    text :title, :body, :news_source, stored: true
+    boolean :recommended
+  end
 
 end

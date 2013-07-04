@@ -9,6 +9,8 @@ NewsGenius::Application.routes.draw do
   resource :current_user, :only => [:show]
   resources :topics, only: :index
   resources :recommended_articles, only: :index
+  resource :search, :only => [:show]
+
   resources :articles, :only => [:create, :update, :destroy, :show] do
     resources :snippets, :only => [:create, :update, :destroy, :show]
   end
