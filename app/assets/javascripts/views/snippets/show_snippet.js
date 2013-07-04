@@ -6,6 +6,8 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 	render: function() {
 		var that = this;
+		console.log(this.model.annotations.models[1].get("annotator").username)
+
 		var renderedSnippet = that.template({annotations: this.model.annotations.models});
 
 		this.$el.addClass("snippetView popup");

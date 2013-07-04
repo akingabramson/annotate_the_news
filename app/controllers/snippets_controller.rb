@@ -20,7 +20,7 @@ class SnippetsController < ApplicationController
 
   def show
     @article = Article.find(params[:article_id])
-    @snippets = @article.snippets.select {|snippet| p snippet.id == params[:id].to_i}
+    @snippets = @article.snippets.select {|snippet| snippet.id == params[:id].to_i}
     @snippet = @snippets.first
     if @snippet
       render json: @snippet

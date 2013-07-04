@@ -20,7 +20,7 @@ class Snippet < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super(options.merge({include: :annotations}))
+    super(options.merge({include: {annotations: {include: :annotator}}}))
   end
 
 end

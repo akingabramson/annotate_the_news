@@ -13,3 +13,22 @@
 #new-annotation-submit {
 	float:bottom;
 }
+
+.annotation-list {
+	background-color: white;
+}
+
+
+.dropdown {
+
+	width: 150px;
+	float: top;
+	z-index:100;
+	position: absolute;
+	background-color: white;
+}
+
+.search-result {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}

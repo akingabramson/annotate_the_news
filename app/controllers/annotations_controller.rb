@@ -13,6 +13,13 @@ class AnnotationsController < ApplicationController
   end
 
   def destroy
+    @annotation = Annotation.find(params[:id])
+    if @annotation.annotator == current_user
+      @annotation.destroy
+      render json: {message: "Annotation deleted."}
+    else
+      render json: {}, status: 403
+    end
   end
 
   def show
