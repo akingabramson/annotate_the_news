@@ -1,13 +1,15 @@
 NG.Views.ArticleView = Backbone.View.extend({
 	initialize: function() {
+    var that = this;
 		this.listenTo(this.model.snippets, "all", this.render);
+    $("html").on("click", function(e) {that.checkClick(e)});
 	},
 
 	template: JST["articles/article_show"],
 	events: {
-    "mouseup .article-body": "popupAnnotate",
-    "click html" : "removePopups",
-    "click .snippet-link": "showSnippet"
+    // "mouseup .article-body": "popupAnnotate",
+    // "click html" : "removePopups",
+    // "click .snippet-link": "showSnippet"
   },
 	render: function() {
 		var that = this;
@@ -21,8 +23,9 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   showSnippet: function(event) {
     var that = this;
-    var snippetId = $(event.currentTarget).attr("data-id");
+    var snippetId = $(event.target).attr("data-id");
     if (this.lastSnippetId == snippetId) {
+
       this.$el.find(".snippetView").remove();
       this.lastSnippetId = undefined;
       return;
@@ -78,9 +81,6 @@ NG.Views.ArticleView = Backbone.View.extend({
     var that = this;
     that.removePopups()
 
-    if ($(event.target).is(".snippet-link")) {
-      return;
-    } 
     NG.Store.snapSelectionToWord();
  		var snippet = that.grabSnippet();
 
@@ -96,7 +96,19 @@ NG.Views.ArticleView = Backbone.View.extend({
     });
   },
 
-  removePopups: function(event) {
+  checkClick: function(event) {
+    var clickedThing = $(event.target)
+    if (clickedThing.hasClass("snippet-link")) {
+      this.removePopups();
+      this.showSnippet(event);
+    } else if (clickedThing.hasClass("article-body")) {
+      this.popupAnnotate(event);
+    } else {
+      this.removePopups();
+    }
+  },
+
+  removePopups: function() {
     this.$el.find(".popup").remove();
   },
 
