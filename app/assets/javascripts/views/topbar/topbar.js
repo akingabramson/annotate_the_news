@@ -11,6 +11,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		"click #signup-link": "toggleSignUp",
 		"click #login-button": "login",
 		"click #signup-button": "signup",
+		"keydown #searchBar": "search",
 		// click submit button, enter button sends form? 
 	},
 
@@ -21,7 +22,7 @@ NG.Views.TopBar = Backbone.View.extend({
 			var renderedBar = that.template({currentUser: currentUser});
 			$(that.el).html(renderedBar);
 		}
-		
+
 		NG.Store.CurrentUser.fetch({
 			success: function() {
 				renderTopBar(NG.Store.CurrentUser)},
@@ -30,6 +31,37 @@ NG.Views.TopBar = Backbone.View.extend({
 				renderTopBar(new NG.Models.User());
 			}
 		})
+	},
+
+	search: function(event) {
+		var that = this;
+		this.$el.find("#search-dropdown").remove();
+		var query;
+		if (event.keyCode == 13) {
+			query = $.param({q: $(event.currentTarget).val()});
+
+		} else if (event.keyCode == 27) {
+		} else {
+			query = $.param({q: $(event.currentTarget).val(),
+											limit: 5});
+			$.ajax({
+			url: "/search",
+			data: query,
+			success: function(response) {
+				var $renderedResults = $(JST["searches/search_results"]({results: response}));
+				var wrapper = that.$el.find("#searchbar-wrapper")
+				console.log($renderedResults)
+				wrapper.append($renderedResults);
+				$renderedResults.toggleClass("hidden");
+				$renderedResults.stop().slideDown(50);
+
+
+				// toggleclass selected when down or up arrow
+			},
+		});
+		}
+
+
 	},
 
 	login: function(event) {

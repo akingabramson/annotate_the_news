@@ -21,9 +21,4 @@ class ArticlesController < ApplicationController
     end
   end
   
-  def search
-    @search = Article.search do
-      keywords(params[:q])
-    end
-  end  
 end

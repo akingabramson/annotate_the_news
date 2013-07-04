@@ -10,6 +10,7 @@ NewsGenius::Application.routes.draw do
   resources :topics, only: :index
   resources :recommended_articles, only: :index
   resource :search, :only => [:show]
+  resource :extended_search, :only => :show
 
   resources :articles, :only => [:create, :update, :destroy, :show] do
     resources :snippets, :only => [:create, :update, :destroy, :show]
