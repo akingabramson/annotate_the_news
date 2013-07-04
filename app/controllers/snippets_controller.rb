@@ -1,6 +1,6 @@
 class SnippetsController < ApplicationController
-  before_filter :authenticate_user!, only: [:create, :update, :destroy]
-
+  before_filter :require_login, only: [:create]
+  
   def create    
     @snippet = Snippet.new(params[:snippet])
     

@@ -74,19 +74,19 @@ NG.Views.ArticleView = Backbone.View.extend({
     var renderedPopup = JST["articles/annotate_popup"]({x: event.pageX, y: (event.pageY-20)})
     that.$el.append(renderedPopup);
 
-    that.$el.find(".annotate-button").on("click", function(){
-    	that.renderSnippet(snippet, event)
+    that.$el.find("#annotate-button").on("click", function(){
+    	that.checkSnippet(snippet, event)
     });
   },
 
   removePopups: function() {
-    this.$el.find(".annotate-button").remove();
-    this.$el.find(".new-annotation-form").remove();
+    // this.$el.find(".annotate-button").remove();
+    // this.$el.find(".new-annotation-form").remove();
     this.$el.find(".popup").remove();
-    this.$el.find(".annotation-list").remove();
+    // this.$el.find(".annotation-list").remove();
   },
 
-  renderSnippet: function(snippet, event) {
+  checkSnippet: function(snippet, event) {
   	var that = this
 
     var snippetIndices = that.grabSnippetIndices(snippet);
@@ -97,22 +97,36 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     } else {
       // make a new snippet
-    	var newSnippet = new NG.Models.Snippet({start: snippetIndices[0],
-																							end: snippetIndices[1], 
+      NG.Store.CurrentUser.fetch({
+        success: function(){
+          that.renderSnippet(event, snippetIndices, snippet)
+        },
+        error: function() {
+          var loginPopup = JST["popups/popup"]({x: 33, y: event.pageY, 
+                                              text: "Must be logged in to annotate."});
+          that.$el.append(loginPopup)
+        }
+      });
+    }
+  },
+
+  renderSnippet: function(event, snippetIndices, snippet) {
+    var that = this;
+    var newSnippet = new NG.Models.Snippet({start: snippetIndices[0],
+                                              end: snippetIndices[1], 
                                               article_id: that.model.id,
                                               text: String(snippet)}, 
-																							{collection: that.model.snippets});
+                                              {collection: that.model.snippets});
 
-    	var newSnippetView = new NG.Views.NewSnippetView({model: newSnippet,
-    																										attributes: {article: that.model},
-    																										});// new annotation form
-    	
-    	newSnippetView.render().$el.css({"position":"absolute",
-    												           "top": event.pageY - 20 + "px",
-    												           "left": event.pageX + "px",
+    var newSnippetView = new NG.Views.NewSnippetView({model: newSnippet,
+                                                        attributes: {article: that.model},
+                                                        });// new annotation form
+      
+    newSnippetView.render().$el.css({"position":"absolute",
+                                       "top": event.pageY - 20 + "px",
+                                       "left": event.pageX + "px",
                                         "background-color": "white"});
-    	that.$el.append(newSnippetView.$el);
-    }
+    that.$el.append(newSnippetView.$el);
   },
 
   snippetsOverlap: function(snippet) {

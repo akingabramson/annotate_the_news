@@ -37,7 +37,6 @@ NG.Views.TopBar = Backbone.View.extend({
 		that.$el.find("#login-error").remove();
 
 		var data = that.$el.find("#new_session").serialize();
-		console.log(data);
 
 		$.ajax({
 			url: "/session",
@@ -72,13 +71,12 @@ NG.Views.TopBar = Backbone.View.extend({
 			type: "post",
 			data: data,
 			success: function(resp) {
-				console.log(resp);
 				that.render()
 			},
 			error: function(response) {
 				var $errorMessage = $("<div>");
 				$errorMessage.attr("id", "signup-error");
-				$errorMessage.html(response.responseText);
+				$errorMessage.html(response);
 
 				that.$el.find("#signup-div").append($errorMessage);
 			}
@@ -133,18 +131,15 @@ NG.Views.TopBar = Backbone.View.extend({
 
 	logout: function(event) {
 		event.preventDefault();
-		console.log("Currently loggin out");
 		$.ajax({
 			url: "/session",
 			type: "delete",
 			success: function(resp) {
-				console.log(resp)
 				console.log("logged out")
 				topBar.render();
 			},
 			error: function(resp) {
 				console.log("didn't log out");
-				console.log(resp);
 			}
 		});
 	},

@@ -2,7 +2,8 @@ NG.Views.SnippetView = Backbone.View.extend({
 	template: JST["snippets/show"],
 	render: function() {
 		var annotationList = $("<ul>")
-		annotationList.addClass("annotation-list");
+		annotationList.addClass("popup");
+		annotationList.attr("id", "annotation-list");
 		annotationList.css({"position": "absolute",
 												"top": this.attributes.event.pageY,
 												"left": this.attributes.event.pageX + 30,
