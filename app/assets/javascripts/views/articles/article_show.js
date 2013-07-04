@@ -11,6 +11,19 @@ NG.Views.ArticleView = Backbone.View.extend({
     // "click html" : "removePopups",
     // "click .snippet-link": "showSnippet"
   },
+
+  checkClick: function(event) {
+    var clickedThing = $(event.target)
+    if (clickedThing.hasClass("snippet-link")) {
+      this.removePopups();
+      this.showSnippet(event);
+    } else if (clickedThing.hasClass("article-body")) {
+      this.removePopups();
+      this.popupAnnotate(event);
+      this.lastSnippetId = undefined;
+    }
+  },
+
 	render: function() {
 		var that = this;
 		var renderedArticle = that.template({article: that.model})
@@ -97,19 +110,6 @@ NG.Views.ArticleView = Backbone.View.extend({
     });
   },
 
-  checkClick: function(event) {
-    var clickedThing = $(event.target)
-    if (clickedThing.hasClass("snippet-link")) {
-      this.removePopups();
-      this.showSnippet(event);
-    } else if (clickedThing.hasClass("article-body")) {
-      this.popupAnnotate(event);
-      this.lastSnippetId = undefined;
-    } else {
-      this.removePopups();
-      this.lastSnippetId = undefined;
-    }
-  },
 
   removePopups: function() {
     this.$el.find(".popup").remove();
@@ -162,7 +162,6 @@ NG.Views.ArticleView = Backbone.View.extend({
     var range = snippet.getRangeAt(0);
     return range.endContainer.data !== range.startContainer.data
   },
-
 
   grabSnippet: function() {
 		var snippet = '';
