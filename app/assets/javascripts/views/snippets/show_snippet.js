@@ -1,7 +1,7 @@
 NG.Views.SnippetView = Backbone.View.extend({
 	template: JST["snippets/show"],
 	events: {
-		"click new-annotation-submit": "checkUser",
+		"click .new-annotation-submit": "checkUser",
 	},
 
 	render: function() {
@@ -18,7 +18,6 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 
 	checkUser: function() {
-		console.log("here")
 		var that = this;
 		NG.Store.CurrentUser.fetch({
         success: function(){
@@ -34,7 +33,6 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 	_submitAnnotation: function() {
 		var that = this;
-		that.model.collection.add(that.model);
 
 		var annotationText = that.$el.find("#new-annotation-text").val();
 		var annotation = new NG.Models.Annotation({body: annotationText, 
@@ -42,8 +40,7 @@ NG.Views.SnippetView = Backbone.View.extend({
 		that.model.annotations.add(annotation);
 		annotation.save({}, {
 			success: function() {
-				console.log("annotation saved")
-				that.remove();
+				that.render();
 			},
 			error: function(resp) {
 			console.log(resp);
