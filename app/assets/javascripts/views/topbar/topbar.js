@@ -60,7 +60,6 @@ NG.Views.TopBar = Backbone.View.extend({
               text: item.news_source + "-  " + item.title,
             });
            });
-	      	// var renderedData = JST["searches/search_results"]({results: data});
           return {results: results};
         }
 	    },

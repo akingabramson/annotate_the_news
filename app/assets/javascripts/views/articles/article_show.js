@@ -37,7 +37,6 @@ NG.Views.ArticleView = Backbone.View.extend({
   showSnippet: function(event) {
     var that = this;
     var snippetId = $(event.target).attr("data-id");
-    console.log("here")
 
     if (this.lastSnippetId == snippetId) {
       this.$el.find(".snippetView").remove();
@@ -97,6 +96,8 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     NG.Store.snapSelectionToWord();
  		var snippet = that.grabSnippet();
+
+    console.log(snippet);
 
     if (String(snippet).length <= 0){
       return; 
@@ -167,13 +168,10 @@ NG.Views.ArticleView = Backbone.View.extend({
 		var snippet = '';
 	  if (window.getSelection) {
 	    snippet = window.getSelection();
-      this.somethingSelected = true;
 	  } else if(document.getSelection){
 	    snippet = document.getSelection();
-      this.somethingSelected = true;
 	  } else if(document.selection){
 	    snippet = document.selection.createRange().text;
-      this.somethingSelected = true;
 
 	  }
     

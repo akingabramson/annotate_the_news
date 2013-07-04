@@ -2,11 +2,11 @@ NG.Views.SnippetView = Backbone.View.extend({
 	template: JST["snippets/show"],
 	events: {
 		"click .new-annotation-submit": "checkUser",
+		"click .delete-annotation": "deleteAnnotation",
 	},
 
 	render: function() {
 		var that = this;
-		console.log(this.model.annotations.models[1].get("annotator").username)
 
 		var renderedSnippet = that.template({annotations: this.model.annotations.models});
 
@@ -33,15 +33,39 @@ NG.Views.SnippetView = Backbone.View.extend({
   	});
 	},
 
+	deleteAnnotation: function(event) {
+		var that = this;
+
+		var id = $(event.currentTarget).data("id");
+		console.log(that.model.annotations.get(id));
+		$.ajax({
+			url: "/annotations/"+ id,
+			type: "delete",
+			success: function(resp) {
+				console.log("deleted")
+				var deletedAnnotation = that.model.annotations.get(id);
+				that.model.annotations.remove(deletedAnnotation)
+				that.render();
+			},
+			error: function(resp) {
+				var errors = this.$el.find("annotation-"+id+"-errors")
+				errors.html(resp.message);
+			},
+		})
+
+
+	},
+
 	_submitAnnotation: function() {
 		var that = this;
 
 		var annotationText = that.$el.find("#new-annotation-text").val();
 		var annotation = new NG.Models.Annotation({body: annotationText, 
 																					snippet_id: that.model.id });
-		that.model.annotations.add(annotation);
+		that.model.annotations.add(annotation);		
 		annotation.save({}, {
-			success: function() {
+			success: function(resp) {
+				annotation.set(resp);
 				that.render();
 			},
 			error: function(resp) {

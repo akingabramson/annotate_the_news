@@ -7,5 +7,7 @@ class Annotation < ActiveRecord::Base
   belongs_to :annotator, class_name: "User", foreign_key: :annotator_id
   belongs_to :snippet
 
-
+  def as_json(options = {})
+    super(options.merge({include: :annotator}))
+  end
 end

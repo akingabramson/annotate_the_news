@@ -3,7 +3,8 @@ class AnnotationsController < ApplicationController
   def create
     @annotation = current_user.annotations.build(params[:annotation])
     if @annotation.save
-      render json: @annotation
+      p @annotation.to_json
+      render json: @annotation.to_json
     else
       render json: @annotation.errors.full_messages, status: 422
     end
@@ -18,7 +19,7 @@ class AnnotationsController < ApplicationController
       @annotation.destroy
       render json: {message: "Annotation deleted."}
     else
-      render json: {}, status: 403
+      render json: {message: "Could not delete."}, status: 403
     end
   end
 
