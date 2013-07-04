@@ -2,11 +2,11 @@ NG.Views.ArticleView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model.snippets, "all", this.render);
 	},
-  
+
 	template: JST["articles/article_show"],
 	events: {
     "mouseup .article-body": "popupAnnotate",
-    "click body" : "removePopups",
+    "click html" : "removePopups",
     "click .snippet-link": "showSnippet"
   },
 	render: function() {
@@ -21,8 +21,20 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   showSnippet: function(event) {
     var that = this;
-
     var snippetId = $(event.currentTarget).attr("data-id");
+    if (this.lastSnippetId == snippetId) {
+      this.$el.find(".snippetView").remove();
+      this.lastSnippetId = undefined;
+      return;
+    }
+    this.lastSnippetId = snippetId;
+
+    if (window.getSelection) {
+        window.getSelection().removeAllRanges();
+    } else if (document.selection) {
+        document.selection.empty();
+    }
+
     var shownSnippet = new NG.Models.Snippet({id: snippetId}, {collection: this.model.snippets});
     shownSnippet.fetch({
       success: function() {
@@ -66,11 +78,15 @@ NG.Views.ArticleView = Backbone.View.extend({
     var that = this;
     that.removePopups()
 
+    if ($(event.target).is(".snippet-link")) {
+      return;
+    } 
     NG.Store.snapSelectionToWord();
-
  		var snippet = that.grabSnippet();
 
-    if (String(snippet).length <= 0) return;
+    if (String(snippet).length <= 0){
+      return; 
+    }
 
     var renderedPopup = JST["articles/annotate_popup"]({x: event.pageX, y: (event.pageY-20)})
     that.$el.append(renderedPopup);
@@ -80,7 +96,7 @@ NG.Views.ArticleView = Backbone.View.extend({
     });
   },
 
-  removePopups: function() {
+  removePopups: function(event) {
     this.$el.find(".popup").remove();
   },
 
@@ -137,10 +153,14 @@ NG.Views.ArticleView = Backbone.View.extend({
 		var snippet = '';
 	  if (window.getSelection) {
 	    snippet = window.getSelection();
+      this.somethingSelected = true;
 	  } else if(document.getSelection){
 	    snippet = document.getSelection();
+      this.somethingSelected = true;
 	  } else if(document.selection){
 	    snippet = document.selection.createRange().text;
+      this.somethingSelected = true;
+
 	  }
     
 
