@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: articles
+#
+#  id           :integer          not null, primary key
+#  url          :string(255)
+#  title        :string(255)
+#  body         :text
+#  news_source  :string(255)
+#  submitter_id :integer
+#  topic_id     :integer
+#  recommended  :boolean          default(FALSE)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
+
 class Article < ActiveRecord::Base
   attr_accessible :body, :news_source, :recommended, :submitter_id, :title, :topic_id, :url
   

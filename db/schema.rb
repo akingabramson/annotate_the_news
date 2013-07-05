@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130702211133) do
+ActiveRecord::Schema.define(:version => 20130705002620) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "annotator_id"
@@ -63,5 +63,13 @@ ActiveRecord::Schema.define(:version => 20130702211133) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+
+  create_table "uservotes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "annotation_id"
+    t.boolean  "upvote"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
 end

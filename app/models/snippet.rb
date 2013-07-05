@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: snippets
+#
+#  id         :integer          not null, primary key
+#  text       :string(255)
+#  article_id :integer
+#  start      :integer
+#  end        :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class Snippet < ActiveRecord::Base
   attr_accessible :article_id, :start, :end, :text
 
@@ -20,7 +33,7 @@ class Snippet < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super(options.merge({include: {annotations: {include: :annotator}}}))
+    super(options.merge({include: {annotations: {include: [:annotator, :user_votes]}}}))
   end
 
 end

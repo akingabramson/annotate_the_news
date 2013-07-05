@@ -23,6 +23,7 @@ class SnippetsController < ApplicationController
     @snippets = @article.snippets.select {|snippet| snippet.id == params[:id].to_i}
     @snippet = @snippets.first
     if @snippet
+      p @snippet
       render json: @snippet
     else
       render json: {}, status: 404
