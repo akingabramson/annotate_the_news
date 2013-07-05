@@ -65,7 +65,6 @@ NG.Views.SnippetView = Backbone.View.extend({
 		that.model.annotations.add(annotation);		
 		annotation.save({}, {
 			success: function(resp) {
-				annotation.set(resp);
 				that.render();
 			},
 			error: function(resp) {
