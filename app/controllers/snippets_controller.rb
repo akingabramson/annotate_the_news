@@ -2,8 +2,10 @@ class SnippetsController < ApplicationController
   before_filter :require_login, only: [:create]
   
   def create    
+    p "parmas are"
+    p params
+
     @snippet = Snippet.new(params[:snippet])
-    
     if @snippet.save
       render json: @snippet
     else

@@ -27,6 +27,7 @@ NG.Views.TopBar = Backbone.View.extend({
 
 		NG.Store.CurrentUser.fetch({
 			success: function() {
+		    console.log(NG.Store.CurrentUser);
 				renderTopBar(NG.Store.CurrentUser);
 				that.initSearchBar();
 			},
@@ -78,8 +79,9 @@ NG.Views.TopBar = Backbone.View.extend({
 	login: function(event) {
 		event.preventDefault();
 		var that = this;
+		var $loginDiv = that.$el.find("#login-div");
+
 		that.$el.find("#login-error").remove();
-		this.loginClicked = true;
 
 		var data = that.$el.find("#new_session").serialize();
 
@@ -91,6 +93,8 @@ NG.Views.TopBar = Backbone.View.extend({
 				console.log(resp)
 				AUTH_TOKEN = resp.auth_token;
 				console.log("logged in")
+				$loginDiv.toggleClass("hidden");
+				this.loginClicked = false;
 				that.render();
 			},
 
@@ -99,7 +103,7 @@ NG.Views.TopBar = Backbone.View.extend({
 				var $errorMessage = $("<div>");
 				$errorMessage.attr("id", "login-error");
 				$errorMessage.html("Invalid username or password.");
-				that.$el.find("#login-div").append($errorMessage);
+				$loginDiv.append($errorMessage);
 			}
 			
 		});
@@ -108,7 +112,7 @@ NG.Views.TopBar = Backbone.View.extend({
 	signup: function(event) {
 		event.preventDefault();
 		var that = this;
-		this.signupClicked = true;
+		var $signupDiv = this.$el.find("#signup-div");
 
 		that.$el.find("#signup-error").remove();
 
@@ -118,6 +122,9 @@ NG.Views.TopBar = Backbone.View.extend({
 			type: "post",
 			data: data,
 			success: function(resp) {
+				$signupDiv.toggleClass("hidden");
+				this.signupClicked = false;
+
 				that.render()
 			},
 			error: function(response) {
@@ -125,7 +132,7 @@ NG.Views.TopBar = Backbone.View.extend({
 				$errorMessage.attr("id", "signup-error");
 				$errorMessage.html(response);
 
-				that.$el.find("#signup-div").append($errorMessage);
+				$signupDiv.append($errorMessage);
 			}
 			// append errors to bottom of form.
 
@@ -151,7 +158,6 @@ NG.Views.TopBar = Backbone.View.extend({
 			$loginDiv.stop().slideDown(50);
 			this.loginClicked = true;
 		}
-		$loginDiv.toggleClass("hidden");
 	},
 
 	toggleSignUp: function(event) {
@@ -172,7 +178,6 @@ NG.Views.TopBar = Backbone.View.extend({
 			$signupDiv.stop().slideDown(50);
 			this.signupClicked = true;
 		}
-		$signupDiv.toggleClass("hidden");
 	},
 
 	logout: function(event) {

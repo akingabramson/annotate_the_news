@@ -7,7 +7,6 @@ window.NG = {
   initialize: function() {
     NG.Store.CurrentUser = new NG.Models.CurrentUser();
 
-    console.log(NG.Store.CurrentUser);
     topBar = new NG.Views.TopBar({el: $("#topbar")});
     topBar.render();
 

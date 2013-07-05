@@ -27,10 +27,13 @@ class Article < ActiveRecord::Base
   searchable do
     text :title, :body, :news_source, stored: true
     boolean :recommended
+    string  :sort_title do
+      title.downcase.gsub(/^(an?|the)/, '')
+    end
   end
 
   def as_json(options = {})
-    super(options.merge({:include => :snippets}))
+    super(options.merge({include: {snippets: {include: {annotations: {include: :annotator}}}}}))
   end
 
 end

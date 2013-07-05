@@ -11,16 +11,13 @@ NG.Views.NewSnippetView = Backbone.View.extend({
 	},
 	submitAnnotation: function() {
 		var that = this;
-		that.model.collection.add(that.model);
-
 		that.model.save({}, {
 			success: function(savedSnippet) {
-				console.log("saved snippet")
 				var annotationText = that.$el.find("#new-annotation-text").val();
-				var annotation = new NG.Models.Annotation({body: annotationText, 
-																							snippet_id: that.model.id });
-
-				that.model.annotations.add(annotation);
+				var annotation = NG.Models.Annotation.findOrCreate({body: annotationText, 
+																							snippet_id: that.model.id});
+				console.log(annotation.url);
+				console.log(annotation);
 				annotation.save({}, {
 					success: function(resp) {
 						annotation.set(resp)

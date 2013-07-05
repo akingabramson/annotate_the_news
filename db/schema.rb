@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130705002620) do
+ActiveRecord::Schema.define(:version => 20130705184804) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "annotator_id"
@@ -19,6 +19,11 @@ ActiveRecord::Schema.define(:version => 20130705002620) do
     t.integer  "snippet_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+  end
+
+  create_table "article_repositories", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "articles", :force => true do |t|

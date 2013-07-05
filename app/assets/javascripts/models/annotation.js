@@ -1,12 +1,24 @@
 NG.Models.Annotation = Backbone.RelationalModel.extend({
 	relations: [{
 		type: "HasMany",
-		key: "votes",
+		key: "user_votes",
 		relatedModel: "NG.Models.Vote",
 		collectionType: "NG.Collections.Votes",
-		reverseCollection: {
-			key: "annotation"
+		reverseRelation: {
+			key: "annotation",
+			includeInJSON: "id",
 		}
+	},
+	{
+		type: "HasOne",
+		key: "annotator",
+		relatedModel: "NG.Models.User",
+		reverseRelation: {
+			key: "annotation",
+			includeInJSON: "id",
+		}
+
 	}],
+	urlRoot: "/annotations",
 
 });

@@ -4,8 +4,9 @@ NG.Models.Snippet = Backbone.RelationalModel.extend({
 		key: "annotations",
 		relatedModel: "NG.Models.Annotation",
 		collectionType: "NG.Collections.Annotations",
-		reverseColleciton: {
-			key: "snippet"
+		reverseRelation: {
+			key: "snippet",
+			includeInJSON: "id"
 		}
 	}]
 });

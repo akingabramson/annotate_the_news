@@ -9,8 +9,10 @@ NG.Views.SnippetView = Backbone.View.extend({
 	render: function() {
 		var that = this;
 
-		var renderedSnippet = that.template({annotations: this.model.annotations.models});
 
+
+		var renderedSnippet = that.template({annotations: this.model.get("annotations").models});
+		
 		this.$el.addClass("snippetView popup");
 		this.$el.css({"top": this.attributes.event.pageY,
 							"left": this.attributes.event.pageX + 30});

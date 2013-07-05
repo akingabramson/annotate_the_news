@@ -17,13 +17,12 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :username
   validates :username, presence: true, uniqueness: true
   validates :password_digest, presence: true
-  has_many :user_votes
+  has_many :user_votes, class_name: "Uservote", foreign_key: :user_id
 
   has_many :submitted_articles, class_name: "Article", foreign_key: :submitter_id, inverse_of: :submitter
   has_many :annotations, foreign_key: :annotator_id, inverse_of: :annotator
 
   def password=(password)
-    p "making password"
     self.password_digest = BCrypt::Password.create(password)
   end
   
@@ -38,7 +37,7 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super(options.merge({include: [:annotations, :user_votes, :submitted_articles]}))
+    super(options.merge({include: [:annotations, :user_votes, :submitted_articles], only: [:id, :iq, :username]}))
   end
 
 end

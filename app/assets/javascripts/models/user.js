@@ -1,15 +1,19 @@
 NG.Models.User = Backbone.RelationalModel.extend({
-	url: "users/",
-	relations: [{
-		type: "HasMany",
-		key: "annotations",
-		relatedModel: "NG.Models.Annotation",
-		collectionType: "NG.Collections.Annotations",
-		reverseRelation: {
-			key: "annotator",
-			keySource: "annotator_id",
-		}
-	}
+	urlRoot: "users/",
+	relations: [
+	// {
+	// 	type: "HasMany",
+	// 	key: "annotations",
+	// 	relatedModel: "NG.Models.Annotation",
+	// 	collectionType: "NG.Collections.Annotations",
+	// 	autoFetch: true,
+	// 	reverseRelation: {
+	// 		key: "annotator",
+	// 		keySource: "annotator_id",
+	// 		autoFetch: true,
+	// 		includeInJSON: "id",
+	// 	}
+	// },
 	{
 		type: "HasMany",
 		key: "votes",
@@ -18,19 +22,25 @@ NG.Models.User = Backbone.RelationalModel.extend({
 		collectionType: "NG.Collections.Votes",
 		reverseRelation: {
 			key: "user",
-			keySource: "user_id"
+			keySource: "user_id",
+			includeInJSON: "id",
+
 		}
-	}
+	},
 	{
 		type: "HasMany",
 		key: "submittedArticles",
 		relatedModel: "NG.Models.Article",
-		collectionType: "NG.Collections.Articles"
+		collectionType: "NG.Collections.Articles",
 		reverseRelation: {
 			key: "submitter",
-			keySource: "submitter_id"
+			keySource: "submitter_id",
+			includeInJSON: "id",			
 		}
 	}]
+})
 
 
+NG.Models.CurrentUser = NG.Models.User.extend({
+	url: "current_user/"
 })

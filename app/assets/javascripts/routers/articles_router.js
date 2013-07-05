@@ -22,6 +22,7 @@ NG.Routers.Articles = Backbone.Router.extend({
 	showArticle: function(id) {
 		var that = this;
 		var article = new NG.Models.Article({id: id});
+
 		article.fetch({
 			success: function(model, response) {
 				var articleView = new NG.Views.ArticleView({model: article});

@@ -1,7 +1,7 @@
 NG.Views.ArticleView = Backbone.View.extend({
 	initialize: function() {
     var that = this;
-		this.listenTo(this.model.snippets, "all", this.render);
+		this.listenTo(this.model.get("snippets"), "sync", this.render);
     $("html").on("click", function(e) {that.checkClick(e)});
 	},
 
@@ -14,6 +14,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   checkClick: function(event) {
     var clickedThing = $(event.target)
+
     if (clickedThing.hasClass("snippet-link")) {
       this.removePopups();
       this.showSnippet(event);
@@ -22,6 +23,10 @@ NG.Views.ArticleView = Backbone.View.extend({
       this.popupAnnotate(event);
       this.lastSnippetId = undefined;
     }
+  },
+
+  removePopups: function() {
+    this.$el.find(".popup").remove();
   },
 
 	render: function() {
@@ -39,7 +44,7 @@ NG.Views.ArticleView = Backbone.View.extend({
     var snippetId = $(event.target).attr("data-id");
 
     if (this.lastSnippetId == snippetId) {
-      this.$el.find(".snippetView").remove();
+      this.snippetView.remove();
       this.lastSnippetId = undefined;
       return;
     }
@@ -51,15 +56,13 @@ NG.Views.ArticleView = Backbone.View.extend({
         document.selection.empty();
     }
 
-    var shownSnippet = new NG.Models.Snippet({id: snippetId}, {collection: this.model.snippets});
-    shownSnippet.fetch({
-      success: function() {
-        var snippetView = new NG.Views.SnippetView({model: shownSnippet, 
-                      attributes: {event: event, parent: that}
-                      });
-        that.$el.append(snippetView.render().$el);
-      }
-    })
+    var shownSnippet = this.model.get("snippets").get(snippetId);
+
+
+    this.snippetView = new NG.Views.SnippetView({model: shownSnippet, 
+                          attributes: {event: event}});
+    that.$el.append(this.snippetView.render().$el);
+
   },
 
   populateSnippets: function() {
@@ -68,14 +71,15 @@ NG.Views.ArticleView = Backbone.View.extend({
     var finalBody = "";
     var lastSnippetEnd = 0;
 
-    var sortedSnippets = _.sortBy(that.model.snippets.models,
-                                  function(model){return model.get("start")});
+    var sortedSnippets = _.sortBy(that.model.get("snippets").models,
+                                  function(snippet){return snippet.get("start")});
 
     _.each(sortedSnippets, function(snippet){
       var snippetLinkText = JST["snippets/snippet_link"]({snippet: snippet});
 
       var snippetBegin = snippet.get("start");
       var snippetEnd = snippet.get("end");
+
       // text from last snippet to beginning of this snippet
       var bodyBeginning = bodyText.slice(lastSnippetEnd, snippetBegin);
       finalBody += bodyBeginning;
@@ -110,13 +114,8 @@ NG.Views.ArticleView = Backbone.View.extend({
   },
 
 
-  removePopups: function() {
-    this.$el.find(".popup").remove();
-  },
-
   checkSnippet: function(snippet, event) {
-  	var that = this
-
+  	var that = this;
     var snippetIndices = that.grabSnippetIndices(snippet);
     if (that.snippetsOverlap(snippet)) {
       // "Can't annotate over an annotation!"
@@ -140,15 +139,14 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   renderSnippet: function(event, snippetIndices, snippet) {
     var that = this;
-    var newSnippet = new NG.Models.Snippet({start: snippetIndices[0],
+    var newSnippet = NG.Models.Snippet.findOrCreate({start: snippetIndices[0],
                                               end: snippetIndices[1], 
                                               article_id: that.model.id,
-                                              text: String(snippet)}, 
-                                              {collection: that.model.snippets});
+                                              text: String(snippet)});
+    console.log(newSnippet.get("annotations").url);
 
-    var newSnippetView = new NG.Views.NewSnippetView({model: newSnippet,
-                                                        attributes: {article: that.model},
-                                                        });// new annotation form
+    var newSnippetView = new NG.Views.NewSnippetView({model: newSnippet});
+    // new annotation form
       
     newSnippetView.render().$el.css({"position":"absolute",
                                        "top": event.pageY - 20 + "px",
@@ -180,7 +178,7 @@ NG.Views.ArticleView = Backbone.View.extend({
   grabSnippetIndices: function(snippet) {
   	var range = snippet.getRangeAt(0);
     var earlierSnippetId = $(snippet.anchorNode.previousSibling).attr("data-id")
-    var earlierSnippet = this.model.snippets.get(earlierSnippetId);
+    var earlierSnippet = this.model.get("snippets").get(earlierSnippetId);
     var start, end;
 
     if (!!earlierSnippet) {
