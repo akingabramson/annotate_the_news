@@ -1,5 +1,5 @@
 NG.Models.User = Backbone.RelationalModel.extend({
-	url: "geniuses/",
+	url: "users/",
 	relations: [{
 		type: "HasMany",
 		key: "annotations",
@@ -13,6 +13,7 @@ NG.Models.User = Backbone.RelationalModel.extend({
 	{
 		type: "HasMany",
 		key: "votes",
+		keySource: "user_votes",
 		relatedModel: "NG.Models.Vote",
 		collectionType: "NG.Collections.Votes",
 		reverseRelation: {

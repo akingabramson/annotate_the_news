@@ -37,4 +37,8 @@ class User < ActiveRecord::Base
     self.session_token
   end
 
+  def as_json(options = {})
+    super(options.merge({include: [:annotations, :user_votes, :submitted_articles]}))
+  end
+
 end
