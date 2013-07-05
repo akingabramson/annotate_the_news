@@ -1,8 +1,9 @@
 NG.Views.SnippetView = Backbone.View.extend({
 	template: JST["snippets/show"],
 	events: {
-		"click .new-annotation-submit": "checkUser",
+		"click .new-annotation-submit": "checkAnnotation",
 		"click .delete-annotation": "deleteAnnotation",
+		"click .vote": "checkVote",
 	},
 
 	render: function() {
@@ -18,16 +19,47 @@ NG.Views.SnippetView = Backbone.View.extend({
 		return this
 	},
 
+	checkVote: function(event) {
+		this.checkUser(event, "Login to upvote", this._submitVote);
+	},
 
-	checkUser: function() {
+	checkAnnotation: function(event) {
+		this.checkUser(event, "Must be logged in to annotate", this._submitAnnotation);
+	},
+
+	_submitVote: function(event) {
+		var button = $(event.currentTarget);
+		var annotationId = button.data("annotationid");
+		var upvoteValue = button.data("upvote");
+		var voteId = button.data("voteid");
+		var url = "/votes";
+		var method;
+
+		if (button.hasClass("selected")) {
+			method = "delete"
+			url = url + "/" + voteId 
+		} else {
+			method = "post"
+		}
+
+		console.log(url);
+
+
+		// $.ajax({
+		// 	url: "/votes"
+		// 	type: 
+		// })
+	},
+
+	checkUser: function(event, message, callback) {
 		var that = this;
 		NG.Store.CurrentUser.fetch({
         success: function(){
-          that._submitAnnotation();
+          callback(event);
         },
         error: function() {
           var loginPopup = JST["popups/popup"]({x: 33, y: event.pageY, 
-                                              text: "Must be logged in to annotate."});
+                                              text: message});
           that.$el.append(loginPopup)
         }
   	});

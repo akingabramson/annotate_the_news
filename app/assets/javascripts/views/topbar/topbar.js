@@ -3,7 +3,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		this.loginClicked = false;
 		this.signupClicked = false;
 		this.selectedResult = -1;
-		this.$el.addClass("topbar")
+		this.$el.addClass("topbar");
 	},
 	template: JST["topbar/topbar"],
 	events: {
@@ -79,6 +79,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		event.preventDefault();
 		var that = this;
 		that.$el.find("#login-error").remove();
+		this.loginClicked = true;
 
 		var data = that.$el.find("#new_session").serialize();
 
@@ -107,6 +108,8 @@ NG.Views.TopBar = Backbone.View.extend({
 	signup: function(event) {
 		event.preventDefault();
 		var that = this;
+		this.signupClicked = true;
+
 		that.$el.find("#signup-error").remove();
 
 		var data = that.$el.find("#new_user").serialize();
@@ -135,6 +138,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		var $loginDiv = this.$el.find('#login-div');
 
 		if (this.signupClicked) {
+			console.log("signupclicked");
 			$signupDiv.stop().slideUp(0);
 			$signupDiv.toggleClass("hidden");
 			this.signupClicked = false;

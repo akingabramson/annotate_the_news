@@ -1,6 +1,11 @@
-NG.Models.Snippet = Backbone.Model.extend({
-	parse: function(response) {
-		this.annotations = new NG.Collections.Annotations(response.annotations);
-		return response
-	}
+NG.Models.Snippet = Backbone.RelationalModel.extend({
+	relations: [{
+		type: "HasMany",
+		key: "annotations",
+		relatedModel: "NG.Models.Annotation",
+		collectionType: "NG.Collections.Annotations",
+		reverseColleciton: {
+			key: "snippet"
+		}
+	}]
 });

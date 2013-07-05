@@ -96,9 +96,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     NG.Store.snapSelectionToWord();
  		var snippet = that.grabSnippet();
-
-    console.log(snippet);
-
+    
     if (String(snippet).length <= 0){
       return; 
     }
