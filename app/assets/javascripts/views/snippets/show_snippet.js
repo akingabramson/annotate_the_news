@@ -1,4 +1,8 @@
 NG.Views.SnippetView = Backbone.View.extend({
+	initialize: function() {
+		this.currentUserVotes = NG.Store.CurrentUser.get("votes");
+		this.listenTo(this.currentUserVotes, "sync", this.render);
+	},
 	template: JST["snippets/show"],
 	events: {
 		"click .new-annotation-submit": "checkAnnotation",
@@ -8,9 +12,9 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 	render: function() {
 		var that = this;
-		console.log(NG.Store.CurrentUser.get("votes"));
-		var renderedSnippet = this.template({annotations: this.model.get("annotations").models, 
-																				votes: NG.Store.CurrentUser.get("votes")});
+		console.log(this.currentUserVotes);
+		var renderedSnippet = this.template({annotations: this.model.get("annotations"), 
+																				votes: this.currentUserVotes});
 
 		this.$el.addClass("snippetView popup");
 		this.$el.css({"top": this.attributes.event.pageY,
@@ -30,9 +34,9 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 	_submitVote: function(event) {
 		var that = this;
+
 		var button = $(event.currentTarget);
 		var voteId = button.data("voteid");
-
 		var annotationId = button.data("annotationid");
 		var upvoteValue = button.data("upvote");
 
@@ -40,31 +44,36 @@ NG.Views.SnippetView = Backbone.View.extend({
 									upvote: upvoteValue,
 									id: voteId};
 
-		var currentUserVotes = NG.Store.CurrentUser.get("votes");
-		vote = NG.Models.Vote.findOrCreate(params);
+		var vote = this.currentUserVotes.get(voteId)
 
-
-		if (vote.id) {
+		// if vote matches and is same value, destroy it
+		if (!!vote && vote.get("upvote") == upvoteValue) {
 			vote.destroy({
 				success: function(model, response) {
 					console.log("vote destroyed");
-					currentUserVotes.remove(vote);
+					that.currentUserVotes.remove(vote);
 					that.render();
 				}
 			});
 		} else {
+			// make a new vote if it doesn't exist
+			if (!vote) {
+				vote = new NG.Models.Vote(params)
+				this.currentUserVotes.set(vote);
+			}
 
+			// update or create that vote, which is in currentUserVotes
 			vote.save(params, {
 				success: function(model, response) {
-					console.log("vote posted");
-					currentUserVotes.set(vote);
+					console.log("vote saved");
 					that.render();
 				},
 				error: function(model, response) {
 					console.log("error")
-					currentUserVotes.remove(vote);
+					that.currentUserVotes.remove(vote);
 				}});
-		}
+			
+		} 
 
 	},
 
