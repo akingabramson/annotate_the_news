@@ -8,7 +8,7 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 	render: function() {
 		var that = this;
-
+		console.log(NG.Store.CurrentUser.get("votes"));
 		var renderedSnippet = this.template({annotations: this.model.get("annotations").models, 
 																				votes: NG.Store.CurrentUser.get("votes")});
 
@@ -39,30 +39,31 @@ NG.Views.SnippetView = Backbone.View.extend({
 		var params = {annotation_id: annotationId,
 									upvote: upvoteValue,
 									id: voteId};
-		console.log(voteId)
+
 		var currentUserVotes = NG.Store.CurrentUser.get("votes");
-		var vote = currentUserVotes.get(voteId);
+		vote = NG.Models.Vote.findOrCreate(params);
 
-		console.log(vote);
 
-		if (!!vote) {
+		if (vote.id) {
 			vote.destroy({
 				success: function(model, response) {
 					console.log("vote destroyed");
+					currentUserVotes.remove(vote);
 					that.render();
 				}
 			});
 		} else {
-			vote = NG.Models.Vote.findOrCreate(params);
-			vote.save({
+
+			vote.save(params, {
 				success: function(model, response) {
 					console.log("vote posted");
-					currentUserVotes.add(vote);
+					currentUserVotes.set(vote);
 					that.render();
 				},
 				error: function(model, response) {
-				}
-			});
+					console.log("error")
+					currentUserVotes.remove(vote);
+				}});
 		}
 
 	},
@@ -115,7 +116,6 @@ NG.Views.SnippetView = Backbone.View.extend({
 				that.render();
 			},
 			error: function(resp) {
-			console.log(resp);
 			},
 		});		
 	},

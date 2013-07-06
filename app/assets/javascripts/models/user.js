@@ -20,6 +20,7 @@ NG.Models.User = Backbone.RelationalModel.extend({
 		keySource: "user_votes",
 		relatedModel: "NG.Models.Vote",
 		collectionType: "NG.Collections.Votes",
+		autoFetch: true,
 		reverseRelation: {
 			key: "user",
 			keySource: "user_id",
