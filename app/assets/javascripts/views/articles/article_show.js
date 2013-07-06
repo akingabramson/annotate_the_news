@@ -58,7 +58,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     var shownSnippet = this.model.get("snippets").get(snippetId);
 
-
+    console.log(shownSnippet);
     this.snippetView = new NG.Views.SnippetView({model: shownSnippet, 
                           attributes: {event: event}});
     that.$el.append(this.snippetView.render().$el);
@@ -143,7 +143,6 @@ NG.Views.ArticleView = Backbone.View.extend({
                                               end: snippetIndices[1], 
                                               article_id: that.model.id,
                                               text: String(snippet)});
-    console.log(newSnippet.get("annotations").url);
 
     var newSnippetView = new NG.Views.NewSnippetView({model: newSnippet});
     // new annotation form

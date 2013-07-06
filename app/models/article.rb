@@ -16,6 +16,7 @@
 
 class Article < ActiveRecord::Base
   include PgSearch
+  
   pg_search_scope :search_by_article, :against => {
                     title: "A",
                     body: "B",

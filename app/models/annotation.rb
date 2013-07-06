@@ -21,6 +21,7 @@ class Annotation < ActiveRecord::Base
   belongs_to :snippet
 
   def as_json(options = {})
-    super(options.merge({include: [{annotator: {include: [:id, :username, :iq]}}, :user_votes]}))
+    super(options.merge({include: [:annotator, :user_votes]}))
+    # {include: [:id, :username, :iq]}
   end
 end
