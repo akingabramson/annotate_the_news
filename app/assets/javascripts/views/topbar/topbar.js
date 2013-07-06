@@ -13,7 +13,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		"click #login-button": "login",
 		"click #signup-button": "signup",
 		"keydown #searchBar": "search",
-		"select .search-result": "selectResult",
+		// "select .search-result": "selectResult",
 		// click submit button, enter button sends form? 
 	},
 
@@ -81,6 +81,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		var that = this;
 		var $loginDiv = that.$el.find("#login-div");
 
+
 		that.$el.find("#login-error").remove();
 
 		var data = that.$el.find("#new_session").serialize();
@@ -90,9 +91,10 @@ NG.Views.TopBar = Backbone.View.extend({
 			type: "post",
 			data: data,
 			success: function(resp) {
-				console.log(resp)
 				AUTH_TOKEN = resp.auth_token;
 				console.log("logged in")
+				$loggingOut = $("<div>").remove();
+
 				$loginDiv.toggleClass("hidden");
 				this.loginClicked = false;
 				that.render();
@@ -182,14 +184,21 @@ NG.Views.TopBar = Backbone.View.extend({
 
 	logout: function(event) {
 		event.preventDefault();
+		$logoutDiv = this.$el.find("logout-link-wrapper")
+		$loggingOut = $("<div>");
+		$loggingOut.html("Logging out");
+		$logoutDiv.append($loggingOut);
+
 		$.ajax({
 			url: "/session",
 			type: "delete",
 			success: function(resp) {
 				console.log("logged out")
+				$loggingOut.remove()
 				topBar.render();
 			},
 			error: function(resp) {
+				$loggingOut.remove()
 				console.log("didn't log out");
 			}
 		});

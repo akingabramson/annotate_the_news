@@ -20,7 +20,7 @@ NG.Views.SnippetView = Backbone.View.extend({
 	},
 
 	checkVote: function(event) {
-		this.checkUser(event, "Login to upvote", this._submitVote.bind(this));
+		this.checkUser(event, "Login to vote", this._submitVote.bind(this));
 	},
 
 	checkAnnotation: function(event) {

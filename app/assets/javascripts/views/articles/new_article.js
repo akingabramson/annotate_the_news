@@ -5,11 +5,10 @@ NG.Views.NewArticleView = Backbone.View.extend({
 		"click #newArticleForm": "removePopups",
 	},
 	render: function() {
-		var that = this;
-		var renderedForm = that.template({newArticle: that.model, topics: that.attributes.topics});
+		var renderedForm = this.template({newArticle: this.model, topics: this.attributes.topics});
 
-		that.$el.html(renderedForm);
-		return that
+		this.$el.html(renderedForm);
+		return this
 	},
 
 	checkUser: function(event) {

@@ -16,6 +16,7 @@
 //= require backbone
 //= require backbone-relational
 //= require select2
+//= requires outside-events
 //= require news_genius
 //= require_tree ../templates
 //= require_tree ./models
