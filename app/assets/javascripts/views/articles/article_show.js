@@ -58,7 +58,6 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     var shownSnippet = this.model.get("snippets").get(snippetId);
 
-    console.log(shownSnippet);
     this.snippetView = new NG.Views.SnippetView({model: shownSnippet, 
                           attributes: {event: event}});
     that.$el.append(this.snippetView.render().$el);

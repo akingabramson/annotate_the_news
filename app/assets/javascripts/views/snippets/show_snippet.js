@@ -8,7 +8,7 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 	render: function() {
 		var that = this;
-
+		console.log(this.model.get("annotations"));
 		var renderedSnippet = this.template({annotations: this.model.get("annotations").models});
 
 		this.$el.addClass("snippetView popup");
@@ -20,11 +20,11 @@ NG.Views.SnippetView = Backbone.View.extend({
 	},
 
 	checkVote: function(event) {
-		this.checkUser(event, "Login to upvote", this._submitVote);
+		this.checkUser(event, "Login to upvote", this._submitVote.bind(this));
 	},
 
 	checkAnnotation: function(event) {
-		this.checkUser(event, "Must be logged in to annotate", this._submitAnnotation);
+		this.checkUser(event, "Must be logged in to annotate", this._submitAnnotation.bind(this));
 	},
 
 	_submitVote: function(event) {
@@ -69,14 +69,14 @@ NG.Views.SnippetView = Backbone.View.extend({
 		var that = this;
 
 		var id = $(event.currentTarget).data("id");
-		console.log(that.model.annotations.get(id));
+
 		$.ajax({
 			url: "/annotations/"+ id,
 			type: "delete",
 			success: function(resp) {
 				console.log("deleted")
 				var deletedAnnotation = that.model.annotations.get(id);
-				that.model.annotations.remove(deletedAnnotation)
+				that.model.get("annotations").remove(deletedAnnotation)
 				that.render();
 			},
 			error: function(resp) {
@@ -88,19 +88,19 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 	_submitAnnotation: function() {
 		var that = this;
-		console.log(this);
 
-		var annotationText = that.$el.find("#new-annotation-text")
-		// .val()
-		var annotation = NG.Models.Annotation.findOrCreate({body: annotationText, 
+		var annotationText = this.$el.find("#new-annotation-text").val();
+
+		var annotation = NG.Models.Annotation.build({body: annotationText, 
 																					snippet_id: that.model.id });
-		// annotation.save({}, {
-		// 	success: function(resp) {
-		// 		that.render();
-		// 	},
-		// 	error: function(resp) {
-		// 	console.log(resp);
-		// 	},
-		// });		
+		annotation.save({}, {
+			success: function(resp) {
+				that.model.get("annotations").add(annotation)
+				that.render();
+			},
+			error: function(resp) {
+			console.log(resp);
+			},
+		});		
 	},
 });
