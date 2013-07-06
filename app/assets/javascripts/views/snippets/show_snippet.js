@@ -75,7 +75,7 @@ NG.Views.SnippetView = Backbone.View.extend({
 			type: "delete",
 			success: function(resp) {
 				console.log("deleted")
-				var deletedAnnotation = that.model.annotations.get(id);
+				var deletedAnnotation = that.model.get("annotations").get(id);
 				that.model.get("annotations").remove(deletedAnnotation)
 				that.render();
 			},
