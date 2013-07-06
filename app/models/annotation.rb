@@ -31,7 +31,8 @@ class Annotation < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super(options.merge({include: [:annotator, :user_votes, :iq]}))
+    super(options.merge({include: [:user_votes, :annotator]}))
+    # annotator?
     # {include: [:id, :username, :iq]}
   end
 end

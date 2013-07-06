@@ -1,6 +1,6 @@
 NG.Views.AnnotationShow = Backbone.View.extend({
 	initialize: function() {
-		this.listenTo(this.model, "destroy", this.remove);
+		// this.listenTo(this.model, "destroy", this.remove);
 		this.listenTo(this.model.get("user_votes"), "add", this.render);
 		this.listenTo(this.model.get("user_votes"), "remove", this.render);
 		this.listenTo(this.model.get("user_votes"), "change", this.render);
@@ -79,27 +79,13 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 
 		this.model.destroy({
 			success: function() {
+				that.remove();
 			},
 			error: function() {
 				console.log("couldn't delete");
 			}
 		});
 
-		// $.ajax({
-		// 	url: "/annotations/"+ id,
-		// 	type: "delete",
-		// 	success: function(resp) {
-		// 		console.log("deleted")
-		// 		var deletedAnnotation = that.model.get("annotations").get(id);
-		// 		console.log(that);
-		// 		that.model.get("annotations").remove(deletedAnnotation)
-		// 		that.render();
-		// 	},
-		// 	error: function(resp) {
-		// 		var errors = this.$el.find("annotation-"+id+"-errors")
-		// 		errors.html(resp.message);
-		// 	},
-		// })
 	},
 
 	_submitAnnotation: function() {
@@ -111,8 +97,7 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 																					snippet_id: that.model.id });
 		annotation.save({}, {
 			success: function(resp) {
-				that.model.get("annotations").add(annotation)
-				that.render();
+				that.model.get("snippet").get("annotations").add(annotation)
 			},
 			error: function(resp) {
 			},

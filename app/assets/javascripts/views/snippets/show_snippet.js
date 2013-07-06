@@ -1,7 +1,8 @@
 NG.Views.SnippetView = Backbone.View.extend({
 	initialize: function() {
-		this.currentUserVotes = NG.Store.CurrentUser.get("votes");
-		this.listenTo(this.currentUserVotes, "sync", this.render);
+		this.listenTo(this.model.get("annotations"), "add", this.addAnnotation);
+		this.listenTo(this.model.get("annotations"), "change", this.render);
+
 	},
 	template: JST["snippets/show"],
 	events: {
@@ -30,5 +31,11 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 		return this
 	},
+
+	addAnnotation: function(annotation) {
+		var annotationShowView = new NG.Views.AnnotationShow({model: annotation});
+		var $aList = this.$el.find(".annotation-list");
+		$aList.prepend(annotationShowView.render().$el);
+	}
 
 });

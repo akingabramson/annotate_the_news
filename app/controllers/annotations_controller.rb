@@ -2,8 +2,8 @@ class AnnotationsController < ApplicationController
   
   def create
     @annotation = current_user.annotations.build(params[:annotation])
+    p "here"
     if @annotation.save
-      p 'printing in create'
       render json: @annotation
     else
       render json: @annotation.errors.full_messages, status: 422
