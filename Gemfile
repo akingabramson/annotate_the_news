@@ -19,6 +19,5 @@ gem 'backbone-on-rails'
 gem 'bcrypt-ruby', :require => "bcrypt"
 gem 'jquery-rails'
 gem 'pg'
-gem "sunspot_rails"
-gem "sunspot_solr"
+gem 'pg_search'
 gem 'underscore-rails'

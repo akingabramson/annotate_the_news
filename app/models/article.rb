@@ -15,6 +15,12 @@
 #
 
 class Article < ActiveRecord::Base
+  include PgSearch
+  pg_search_scope :search_by_article, :against => {
+                    title: "A",
+                    body: "B",
+                    news_source: "C"}, :using => :tsearch
+
   attr_accessible :body, :news_source, :recommended, :submitter_id, :title, :topic_id, :url
   
   validates :body, :url, :title, :news_source, :submitter_id, :topic_id, presence: :true
@@ -24,13 +30,7 @@ class Article < ActiveRecord::Base
   belongs_to :topic
   belongs_to :submitter, class_name: "User", :foreign_key => :submitter_id
 
-  searchable do
-    text :title, :body, :news_source, stored: true
-    boolean :recommended
-    string  :sort_title do
-      title.downcase.gsub(/^(an?|the)/, '')
-    end
-  end
+
 
   def as_json(options = {})
     super(options.merge({include: {snippets: {include: {annotations: {include: :annotator}}}}}))

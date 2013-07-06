@@ -10,12 +10,11 @@ NG.Views.SnippetView = Backbone.View.extend({
 		var that = this;
 
 
-
 		var renderedSnippet = that.template({annotations: this.model.get("annotations").models});
-		
+
 		this.$el.addClass("snippetView popup");
 		this.$el.css({"top": this.attributes.event.pageY,
-							"left": this.attributes.event.pageX + 30});
+									"left": this.attributes.event.pageX + 30});
 		this.$el.html(renderedSnippet);
 
 		return this
@@ -86,24 +85,23 @@ NG.Views.SnippetView = Backbone.View.extend({
 				errors.html(resp.message);
 			},
 		})
-
-
 	},
 
 	_submitAnnotation: function() {
 		var that = this;
+		console.log(this);
 
-		var annotationText = that.$el.find("#new-annotation-text").val();
-		var annotation = new NG.Models.Annotation({body: annotationText, 
+		var annotationText = that.$el.find("#new-annotation-text")
+		// .val()
+		var annotation = NG.Models.Annotation.findOrCreate({body: annotationText, 
 																					snippet_id: that.model.id });
-		that.model.annotations.add(annotation);		
-		annotation.save({}, {
-			success: function(resp) {
-				that.render();
-			},
-			error: function(resp) {
-			console.log(resp);
-			},
-		});		
+		// annotation.save({}, {
+		// 	success: function(resp) {
+		// 		that.render();
+		// 	},
+		// 	error: function(resp) {
+		// 	console.log(resp);
+		// 	},
+		// });		
 	},
 });
