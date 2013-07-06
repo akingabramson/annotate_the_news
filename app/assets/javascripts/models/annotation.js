@@ -6,7 +6,7 @@ NG.Models.Annotation = Backbone.RelationalModel.extend({
 		collectionType: "NG.Collections.Votes",
 		reverseRelation: {
 			key: "annotation",
-			includeInJSON: "id",
+			includeInJSON: false,
 		}
 	},
 	{

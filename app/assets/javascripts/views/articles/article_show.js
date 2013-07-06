@@ -7,11 +7,6 @@ NG.Views.ArticleView = Backbone.View.extend({
 	},
 
 	template: JST["articles/article_show"],
-	events: {
-    // "mouseup .article-body": "popupAnnotate",
-    // "click html" : "removePopups",
-    // "click .snippet-link": "showSnippet"
-  },
 
   checkClick: function(event) {
     var clickedThing = $(event.target)

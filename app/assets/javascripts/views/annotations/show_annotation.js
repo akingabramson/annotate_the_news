@@ -3,14 +3,6 @@ NG.Views.AnnotationView = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this.template({annotation: this.model}));
 		return this;
-		
-		// $.ajax({
-		// 	url: "geniuses/" + this.model.escape("annotator_id"),
-		// 	type: "GET",
-		// 	success: function(response) {
-		// 		var annotator = JSON.parse(response);
-		// 		console.log(annotator);
-		// 	}
-		// })
+
 	}
 })

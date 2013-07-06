@@ -8,8 +8,9 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 	render: function() {
 		var that = this;
-		console.log(this.model.get("annotations"));
-		var renderedSnippet = this.template({annotations: this.model.get("annotations").models});
+
+		var renderedSnippet = this.template({annotations: this.model.get("annotations").models, 
+																				votes: NG.Store.CurrentUser.get("votes")});
 
 		this.$el.addClass("snippetView popup");
 		this.$el.css({"top": this.attributes.event.pageY,
@@ -28,27 +29,42 @@ NG.Views.SnippetView = Backbone.View.extend({
 	},
 
 	_submitVote: function(event) {
+		var that = this;
 		var button = $(event.currentTarget);
+		var voteId = button.data("voteid");
+
 		var annotationId = button.data("annotationid");
 		var upvoteValue = button.data("upvote");
-		var voteId = button.data("voteid");
-		var url = "/votes";
-		var method;
 
-		if (button.hasClass("selected")) {
-			method = "delete"
-			url = url + "/" + voteId 
+		var params = {annotation_id: annotationId,
+									upvote: upvoteValue,
+									id: voteId};
+		console.log(voteId)
+		var currentUserVotes = NG.Store.CurrentUser.get("votes");
+		var vote = currentUserVotes.get(voteId);
+
+		console.log(vote);
+
+		if (!!vote) {
+			vote.destroy({
+				success: function(model, response) {
+					console.log("vote destroyed");
+					that.render();
+				}
+			});
 		} else {
-			method = "post"
+			vote = NG.Models.Vote.findOrCreate(params);
+			vote.save({
+				success: function(model, response) {
+					console.log("vote posted");
+					currentUserVotes.add(vote);
+					that.render();
+				},
+				error: function(model, response) {
+				}
+			});
 		}
 
-		console.log(url);
-
-
-		// $.ajax({
-		// 	url: "/votes"
-		// 	type: 
-		// })
 	},
 
 	checkUser: function(event, message, callback) {
