@@ -2,7 +2,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 	initialize: function() {
     var that = this;
     this.$el.addClass("article-div");
-		this.listenTo(this.model.get("snippets"), "sync", this.render);
+		// this.listenTo(this.model.get("snippets"), "sync", this.render);
     $("html").on("click", function(e) {that.checkClick(e)});
 	},
 
@@ -54,12 +54,17 @@ NG.Views.ArticleView = Backbone.View.extend({
     } else if (document.selection) {
         document.selection.empty();
     }
-
     var shownSnippet = this.model.get("snippets").get(snippetId);
-
-    this.snippetView = new NG.Views.SnippetView({model: shownSnippet, 
+    
+    shownSnippet.fetch({
+      success: function() {
+        that.snippetView = new NG.Views.SnippetView({model: shownSnippet, 
                           attributes: {event: event}});
-    that.$el.append(this.snippetView.render().$el);
+        that.$el.append(that.snippetView.render().$el);
+
+      }
+    });
+
     
 
   },

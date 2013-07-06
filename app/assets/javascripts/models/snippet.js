@@ -9,5 +9,5 @@ NG.Models.Snippet = Backbone.RelationalModel.extend({
 			key_source: "snippet_id",
 			includeInJSON: "id"
 		}
-	}]
+	}],
 });

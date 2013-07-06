@@ -34,7 +34,11 @@ class Article < ActiveRecord::Base
 
 
   def as_json(options = {})
-    super(options.merge({include: {snippets: {include: {annotations: {include: :annotator}}}}}))
+    super(options.merge({include: :snippets}))
+       # {include: {annotations: {include: [:user_votes]}}}}}
+    # iq is serializable hashing
+
+    # {include: [:annotator, :user_votes, :iq]}
   end
 
 end

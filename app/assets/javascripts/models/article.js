@@ -13,5 +13,7 @@ NG.Models.Article = Backbone.RelationalModel.extend({
 	}],
 	initialize: function() {
 		this.get("snippets").url = "articles/" + this.id + "/snippets/"
-	}
+	},
+	
+
 });

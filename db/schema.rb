@@ -11,14 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130705184804) do
+ActiveRecord::Schema.define(:version => 20130706192025) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "annotator_id"
     t.text     "body"
     t.integer  "snippet_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "iq",           :default => 0
   end
 
   create_table "article_repositories", :force => true do |t|
@@ -63,8 +64,8 @@ ActiveRecord::Schema.define(:version => 20130705184804) do
     t.string   "session_token"
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
-    t.integer  "iq",              :default => 0
     t.string   "username"
+    t.integer  "iq",              :default => 0
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

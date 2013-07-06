@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
 
   has_many :submitted_articles, class_name: "Article", foreign_key: :submitter_id, inverse_of: :submitter
   has_many :annotations, foreign_key: :annotator_id, inverse_of: :annotator
+  has_many :received_votes, :through => :annotations, source: :user_votes
+
 
   def password=(password)
     self.password_digest = BCrypt::Password.create(password)
@@ -36,8 +38,15 @@ class User < ActiveRecord::Base
     self.session_token
   end
 
+  def iq
+    upvotes = received_votes.select {|vote| vote.upvote == true}.count
+    downvotes = received_votes.select {|vote| vote.upvote == false}.count
+
+    return upvotes - downvotes + 100
+  end
+
   def as_json(options = {})
-    super(options.merge({include: [:annotations, :user_votes, :submitted_articles], only: [:id, :iq, :username]}))
+    super(options.merge({only: [:id, :iq, :username]}))
   end
 
 end

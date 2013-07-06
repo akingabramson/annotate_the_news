@@ -1,3 +1,17 @@
+NG.Store.checkUser = function($el, event, message, callback) {
+    NG.Store.CurrentUser.fetch({
+    success: function(){
+      callback(event);
+    },
+    error: function() {
+      var loginPopup = JST["popups/popup"]({x: 33, y: event.pageY, 
+                                          text: message});
+      $el.append(loginPopup)
+    }
+    });
+}
+
+
 NG.Store.snapSelectionToWord = function() {
     var sel;
 

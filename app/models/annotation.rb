@@ -20,8 +20,15 @@ class Annotation < ActiveRecord::Base
   belongs_to :annotator, class_name: "User", foreign_key: :annotator_id
   belongs_to :snippet
 
+  def iq
+    upvotes = user_votes.select {|vote| vote.upvote == true}.count
+    downvotes = user_votes.select {|vote| vote.upvote == false}.count
+
+    return upvotes - downvotes
+  end
+
   def as_json(options = {})
-    super(options.merge({include: [:annotator, :user_votes]}))
+    super(options.merge({include: [:annotator, :user_votes, :iq]}))
     # {include: [:id, :username, :iq]}
   end
 end
