@@ -15,10 +15,13 @@ class Annotation < ActiveRecord::Base
 
   validates :annotator_id, :snippet_id, :body, presence: true
 
-  has_many :user_votes, class_name: "Uservote", foreign_key: :annotation_id
+  has_many :user_votes, class_name: "Uservote", foreign_key: :annotation_id, 
+  :dependent => :destroy
+
 
   belongs_to :annotator, class_name: "User", foreign_key: :annotator_id
   belongs_to :snippet
+
 
   def iq
     upvotes = user_votes.select {|vote| vote.upvote == true}.count
