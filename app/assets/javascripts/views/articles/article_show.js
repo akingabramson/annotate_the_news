@@ -148,10 +148,12 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   renderSnippet: function(event, snippetIndices, snippet) {
     var that = this;
-    var newSnippet = new NG.Models.Snippet({start: snippetIndices[0],
+    var newSnippet = NG.Models.Snippet.findOrCreate({start: snippetIndices[0],
                                               end: snippetIndices[1], 
                                               article_id: that.model.id,
                                               text: String(snippet)});
+    // newSnippet.url = "articles/" + this.model.id + "/snippets/";
+    // wasn't working elsewhere
     var newSnippetView = new NG.Views.SnippetView({model: newSnippet, attributes: {event: event}});
     // new annotation form
       

@@ -20,6 +20,9 @@ class SnippetsController < ApplicationController
   def destroy
     @article = Article.find(params[:article_id])
     @snippets = @article.snippets.select {|snippet| snippet.id == params[:id].to_i}
+    @snippet = @snippets.first
+    p @snippet.annotations
+
     if @snippet && (@snippet.annotations.count == 0)
       @snippet.destroy
       render json: {message: "snippet destroyed"}
@@ -33,7 +36,6 @@ class SnippetsController < ApplicationController
     @snippets = @article.snippets.select {|snippet| snippet.id == params[:id].to_i}
     @snippet = @snippets.first
     if @snippet
-      p @snippet
       render json: @snippet
     else
       render json: {}, status: 404

@@ -41,10 +41,13 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 	checkRemove: function() {
 		console.log("checking remove")
+		console.log(this.model.get("annotations"))
 		if (this.model.get("annotations").length == 0) {
 			var that = this;
+			this.model.urlRoot = "articles/" + this.model.get("article_id") + "/snippets/";
 			this.model.destroy({
 				success: function() {
+					console.log("here")
 					that.remove();
 				}
 			});
