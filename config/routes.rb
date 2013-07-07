@@ -7,7 +7,7 @@ NewsGenius::Application.routes.draw do
 
   resources :user_votes, only: [:create, :destroy, :update]
   resource :current_user, :only => [:show]
-  resources :topics, only: :index
+  resources :topics, only: [:index, :show]
   resources :recommended_articles, only: :index
   resource :search, :only => [:show]
   resource :extended_search, :only => :show

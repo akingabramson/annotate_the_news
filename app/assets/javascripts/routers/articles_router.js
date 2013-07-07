@@ -6,6 +6,7 @@ NG.Routers.Articles = Backbone.Router.extend({
 		"": "homepage",
 		"articles/:id": "showArticle",
 		"new_article": "newArticle",
+		"topics/:id": "showTopic",
 	},
 
 	homepage: function() {
@@ -36,22 +37,23 @@ NG.Routers.Articles = Backbone.Router.extend({
 	},
 
 	newArticle: function() {
-		var that = this;
 		var newArticle = new NG.Models.Article();
+		var newArticleView = new NG.Views.NewArticleView({model: newArticle, attributes: {topics: NG.Store.Topics}});
+		this._swapContentView(newArticleView);		
+	},
+
+	showTopic: function(id) {
+		var that = this;
 		$.ajax({
-			url: "topics/",
-			type: "get",
-			success: function(topics) {
-				var newArticleView = new NG.Views.NewArticleView({model: newArticle, attributes: {topics: topics}});
-				that._swapContentView(newArticleView);
-
-			},
-			error: function(response) {
-				console.log("not connected to the internet");
-			},
+			url: "/topics/"+id,
+			success: function(topicArticles){
+				var articles = new NG.Collections.Articles(topicArticles);
+				var topic = NG.Store.Topics.get(id);
+				console.log(topic);
+				var topicShow = new NG.Views.TopicShow({model: topic, collection: articles});
+				that._swapContentView(topicShow);
+			}
 		})
-
-		
 	},
 
 	_swapContentView: function(newView) {

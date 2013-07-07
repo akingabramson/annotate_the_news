@@ -7,4 +7,10 @@ class TopicsController < ApplicationController
       render json: {}, status: 404
     end
   end
+
+  def show
+    @topic = Topic.find(params[:id])
+    @articles = @topic.newest_articles
+    render json: @articles
+  end
 end

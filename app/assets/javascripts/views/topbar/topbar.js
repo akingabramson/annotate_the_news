@@ -23,6 +23,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		var renderTopBar = function(currentUser) {
 			var renderedBar = that.template({currentUser: currentUser});
 			$(that.el).html(renderedBar);
+			return that;
 		}
 
 		NG.Store.CurrentUser.fetch({

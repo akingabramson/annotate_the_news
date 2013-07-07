@@ -19,8 +19,8 @@
 
 	<label for="newArticleTopic">Topic:</label>
 	<select name="article[topic_id]" id="newArticleTopic">
-		<% _.each(topics, function(topic){ %>
-			<option value="<%=topic.id%>"><%=topic.name%></option>
+		<% topics.each(function(topic){ %>
+			<option value="<%=topic.id%>"><%=topic.escape("name")%></option>
 		<% }) %>
 	</select>
 	<br/>
