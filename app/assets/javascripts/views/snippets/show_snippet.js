@@ -14,8 +14,8 @@ NG.Views.SnippetView = Backbone.View.extend({
 	render: function() {
 		var that = this;
 		this.$el.addClass("snippetView popup");
-		this.$el.css({"top": this.attributes.event.pageY,
-									"left": this.attributes.event.pageX + 30});
+		this.$el.css({"top": this.attributes.event.pageY});
+									// "left": this.attributes.event.pageX + 30});
 
 		var newAnnotationFormView = new NG.Views.NewAnnotationForm({model: this.model})
 		this.$el.append(newAnnotationFormView.render().$el);

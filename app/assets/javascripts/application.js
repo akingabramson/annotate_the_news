@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require foundation
 //= require underscore
 //= require backbone
 //= require backbone-relational
@@ -26,3 +27,5 @@
 //= require_tree ./routers
 //= require_tree ./store
 //= require_tree .
+
+$(function(){ $(document).foundation(); });

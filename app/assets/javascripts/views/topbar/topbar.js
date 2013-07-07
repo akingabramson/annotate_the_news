@@ -3,7 +3,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		this.loginClicked = false;
 		this.signupClicked = false;
 		this.selectedResult = -1;
-		this.$el.addClass("topbar");
+		this.$el.addClass("navbar");
 	},
 	template: JST["topbar/topbar"],
 	events: {
@@ -13,8 +13,6 @@ NG.Views.TopBar = Backbone.View.extend({
 		"click #login-button": "login",
 		"click #signup-button": "signup",
 		"keydown #searchBar": "search",
-		// "select .search-result": "selectResult",
-		// click submit button, enter button sends form? 
 	},
 
 	render: function() {
@@ -23,6 +21,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		var renderTopBar = function(currentUser) {
 			var renderedBar = that.template({currentUser: currentUser});
 			$(that.el).html(renderedBar);
+			$("#title").html('<h2 id="title-text">News Genius</h2>');
 			return that;
 		}
 

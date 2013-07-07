@@ -1,24 +1,42 @@
-<div id="frontpage-link-wrapper" class="topbar-button"><a href="#" id="frontpage-link">Home</a></div>
-<div id="new-article-link-wrapper" class="topbar-button"> <a href="#/new_article" id="new-article-link">New Article</a></div>
-<div id="searchbar-wrapper" class="topbar-button"><input class="searchbar" id="search-bar"></input></div>
+<!-- <div class="contain-to-grid"> -->
+<div class="top-bar">
+<ul class="title-area">
+<li class="name"><!-- Leave this empty --></li>
+</ul>
+		<div id="left-topbar" class="small-3 columns">
+				<div class="row">
+					<div class="small-6 columns"><a href="#" id="frontpage-link">Home</a></div>
+					<div class="small-6 columns"><a href="#/new_article" id="new-article-link">New Article</a></div>
+				</div>
+		</div>
 
-<div id="user-info">
+<div id="searchbar-wrapper" class="small-6 columns topbar-button">
+	<div id="search"><input class="searchbar" id="search-bar" type="hidden"></div></div>
+
+
+<div id="user-info" class="small-3 columns">
 	<% if (!!currentUser.id) { %>
-			<div id="profile-link-wrapper" class="topbar-button">
-					<a href="#/profile" id="profile-link"><%=currentUser.get("username")%></a>
-			</div>
-			<div id="IQ-points" class="topbar-button">
-				IQ: <%=currentUser.get("iq")%>
-			</div>
-			<div id="logout-link-wrapper" class="topbar-button">
-				<a href="#" id="logout-link">Logout</a>
+			<div id="logged-in-info" class="row">
+				<div id="profile-link-wrapper" class="small-4 columns">
+						<a href="#/profile" id="profile-link"><%=currentUser.get("username")%></a>
+				</div>
+				<div id="IQ-points" class="small-4 columns"><a href="#">
+					IQ: <%=currentUser.get("iq")%></a>
+				</div>
+				<div id="logout-link-wrapper" class="small-4 columns">
+					<a href="#" id="logout-link">Logout</a>
+				</div>
 			</div>
 	<% } else { %>
-		<div id="login-link-wrapper" class="topbar-button"><a href="#/login" id="login-link">Login</a>
-			<%= JST["sessions/login"]() %>
-		</div>
-		<div id="signup-link-wrapper" class="topbar-button"><a href="#/signup" id="signup-link">Sign Up</a>
-			<%= JST["users/signup"]() %>
-		</div>
+			<div id="logged-out-info" class="row">
+				<div id="login-link-wrapper" class="small-6 columns"><a href="#/login" id="login-link">Login</a>
+					<%= JST["sessions/login"]() %>
+				</div>
+				<div id="signup-link-wrapper" class="small-6 columns"><a href="#/signup" id="signup-link">Sign Up</a>
+					<%= JST["users/signup"]() %>
+				</div>
+			</div>
 	<% } %>
 </div>
+</div>
+<!-- </div> -->

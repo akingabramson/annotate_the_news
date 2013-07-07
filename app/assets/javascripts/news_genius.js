@@ -22,12 +22,22 @@ window.NG = {
       }
     })
 
-
     NG.Router = new NG.Routers.Articles({$content: $("#main")});
     Backbone.history.start();  
   }
 };
 
+$overlay = $('<div id="overlay"></div>');
+$modal = $('<div id="modal"></div>');
+$content = $('<div id="content"></div>');
+
+$modal.hide();
+$overlay.hide();
+$modal.append($content);
+
 $(document).ready(function(){
   NG.initialize();
+  $('body').append($overlay, $modal);
 });
+
+

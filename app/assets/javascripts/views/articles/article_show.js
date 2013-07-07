@@ -29,7 +29,7 @@ NG.Views.ArticleView = Backbone.View.extend({
   },
 
   removePopups: function() {
-    this.$el.find(".popup").remove();
+    $(".popup").remove();
   },
 
 	render: function() {
@@ -63,9 +63,10 @@ NG.Views.ArticleView = Backbone.View.extend({
     
     shownSnippet.fetch({
       success: function() {
-        that.snippetView = new NG.Views.SnippetView({model: shownSnippet, 
+        that.snippetView = new NG.Views.SnippetView({model: shownSnippet,
                           attributes: {event: event}});
-        that.$el.append(that.snippetView.render().$el);
+        $("#explanation").html(that.snippetView.render().$el);
+        // that.$el.append();
 
       }
     });
@@ -113,7 +114,7 @@ NG.Views.ArticleView = Backbone.View.extend({
       return; 
     }
 
-    var renderedPopup = JST["articles/annotate_popup"]({x: event.pageX, y: (event.pageY-20)})
+    var renderedPopup = JST["articles/annotate_popup"]({x: event.pageX-290, y: (event.pageY-200)})
     that.$el.append(renderedPopup);
 
     that.$el.find("#annotate-button").on("click", function(){
@@ -143,7 +144,7 @@ NG.Views.ArticleView = Backbone.View.extend({
           var loginPopup = JST["popups/popup"]({x: 33, y: event.pageY, 
                                               text: "Must be logged in to annotate."});
 
-          that.$el.append(loginPopup)
+          NG.Store.modal.open({content: loginPopup});
         }
       });
     }
@@ -161,8 +162,8 @@ NG.Views.ArticleView = Backbone.View.extend({
     // new annotation form
       
     newSnippetView.render().$el.css({"position":"absolute",
-                                      "top": event.pageY - 20 + "px",
-                                      "left": event.pageX + "px",
+                                      "top": event.pageY - 290 + "px",
+                                      "left": event.pageX - 200 + "px",
                                       "background-color": "white"});
     that.$el.append(newSnippetView.$el);
   },

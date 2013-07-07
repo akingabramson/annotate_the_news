@@ -49,7 +49,6 @@ NG.Routers.Articles = Backbone.Router.extend({
 			success: function(topicArticles){
 				var articles = new NG.Collections.Articles(topicArticles);
 				var topic = NG.Store.Topics.get(id);
-				console.log(topic);
 				var topicShow = new NG.Views.TopicShow({model: topic, collection: articles});
 				that._swapContentView(topicShow);
 			}
