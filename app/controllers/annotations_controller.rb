@@ -2,7 +2,7 @@ class AnnotationsController < ApplicationController
   
   def create
     @annotation = current_user.annotations.build(params[:annotation])
-    p "here"
+    p @annotation.errors
     if @annotation.save
       render json: @annotation
     else

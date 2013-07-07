@@ -2,7 +2,11 @@ NG.Views.ArticleView = Backbone.View.extend({
 	initialize: function() {
     var that = this;
     this.$el.addClass("article-div");
-		// this.listenTo(this.model.get("snippets"), "sync", this.render);
+    // this.listenTo(this.model.get("snippets"), "add", this.render);
+    // this.listenTo(this.model.get("snippets"), "sync", this.render);
+    this.listenTo(this.model, "snippetAdded", this.render)
+    // this.listenTo(this.model.get("snippets"), "change", this.render);
+		this.listenTo(this.model.get("snippets"), "remove", this.render);
     $("html").on("click", function(e) {that.checkClick(e)});
 	},
 
@@ -30,6 +34,7 @@ NG.Views.ArticleView = Backbone.View.extend({
 
 	render: function() {
 		var that = this;
+    console.log("rendering article");
 		var renderedArticle = that.template({article: that.model})
 
     that.$el.html(renderedArticle);
@@ -100,7 +105,6 @@ NG.Views.ArticleView = Backbone.View.extend({
 
 	popupAnnotate: function(event) {
     var that = this;
-    that.removePopups()
 
     NG.Store.snapSelectionToWord();
  		var snippet = that.grabSnippet();
@@ -120,13 +124,14 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   checkSnippet: function(snippet, event) {
   	var that = this;
-    var snippetIndices = that.grabSnippetIndices(snippet);
-    if (that.snippetsOverlap(snippet)) {
+    var snippetIndices = this.grabSnippetIndices(snippet);
+    if (this.snippetsOverlap(snippet)) {
       // "Can't annotate over an annotation!"
     	var renderedPopup = JST["articles/popup"]({x: 33, y: event.pageY});
-    	that.$el.append(renderedPopup);
+    	this.$el.append(renderedPopup);
 
     } else {
+      var that = this;
       // make a new snippet
       NG.Store.CurrentUser.fetch({
         success: function(){
@@ -143,18 +148,17 @@ NG.Views.ArticleView = Backbone.View.extend({
 
   renderSnippet: function(event, snippetIndices, snippet) {
     var that = this;
-    var newSnippet = NG.Models.Snippet.findOrCreate({start: snippetIndices[0],
+    var newSnippet = new NG.Models.Snippet({start: snippetIndices[0],
                                               end: snippetIndices[1], 
                                               article_id: that.model.id,
                                               text: String(snippet)});
-
-    var newSnippetView = new NG.Views.NewSnippetView({model: newSnippet});
+    var newSnippetView = new NG.Views.SnippetView({model: newSnippet, attributes: {event: event}});
     // new annotation form
       
     newSnippetView.render().$el.css({"position":"absolute",
-                                       "top": event.pageY - 20 + "px",
-                                       "left": event.pageX + "px",
-                                        "background-color": "white"});
+                                      "top": event.pageY - 20 + "px",
+                                      "left": event.pageX + "px",
+                                      "background-color": "white"});
     that.$el.append(newSnippetView.$el);
   },
 
@@ -174,7 +178,6 @@ NG.Views.ArticleView = Backbone.View.extend({
 
 	  }
     
-
 	  return snippet
   },
 
@@ -193,7 +196,6 @@ NG.Views.ArticleView = Backbone.View.extend({
       start = range.startOffset;
       end = range.endOffset;
     }
-    // ERROR HERE
   	return [start, end];
   },
 

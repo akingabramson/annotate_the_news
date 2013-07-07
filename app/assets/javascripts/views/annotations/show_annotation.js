@@ -1,6 +1,5 @@
 NG.Views.AnnotationShow = Backbone.View.extend({
 	initialize: function() {
-		console.log(this.model.get("user_votes"))
 		// this.listenTo(this.model, "destroy", this.remove);
 		this.listenTo(this.model.get("user_votes"), "add", this.render);
 		this.listenTo(this.model.get("user_votes"), "remove", this.render);
@@ -17,6 +16,7 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 
 	render: function() {
 		console.log("rendering")
+		console.log(this.model)
 		this.$el.html(this.template({annotation: this.model}))
 		return this;
 	},
@@ -90,7 +90,6 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 
 	_submitAnnotation: function() {
 		var that = this;
-
 		var annotationText = this.$el.find("#new-annotation-text").val();
 
 		var annotation = NG.Models.Annotation.build({body: annotationText, 
