@@ -137,9 +137,12 @@ NG.Views.ArticleView = Backbone.View.extend({
         success: function(){
           that.renderSnippet(event, snippetIndices, snippet)
         },
-        error: function() {
+        error: function(resp, resp2) {
+          console.log(resp)
+          console.log(resp2)
           var loginPopup = JST["popups/popup"]({x: 33, y: event.pageY, 
                                               text: "Must be logged in to annotate."});
+
           that.$el.append(loginPopup)
         }
       });
