@@ -1,5 +1,6 @@
 NG.Views.AnnotationShow = Backbone.View.extend({
 	initialize: function() {
+		console.log(this.model.get("user_votes"))
 		// this.listenTo(this.model, "destroy", this.remove);
 		this.listenTo(this.model.get("user_votes"), "add", this.render);
 		this.listenTo(this.model.get("user_votes"), "remove", this.render);
@@ -63,7 +64,6 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 				success: function(model, response) {
 					console.log("vote saved");
 					that.model.get("user_votes").set(vote);
-
 				},
 				error: function(model, response) {
 					console.log("error")

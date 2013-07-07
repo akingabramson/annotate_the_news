@@ -23,15 +23,12 @@ NG.Models.Annotation = Backbone.RelationalModel.extend({
 
 	iq: function() {
 		var votes = this.get("user_votes");
-		var upvotes = votes.where(function(vote) {
-			upvote: true
-		});
 
-		var downvotes = votes.where(function(vote) {
-			upvote: false
-		});
+		var upvotes = votes.where({upvote: true});
+		var downvotes = votes.where({upvote: false});
 
-		return upvotes.count - downvotes.count;
+
+		return upvotes.length - downvotes.length;
 	}
 
 });
