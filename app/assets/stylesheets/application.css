@@ -18,6 +18,8 @@ ul {
   list-style-type: none;
 }
 
+
+
 .popup {
 	/*position: absolute;*/
 	/*background-color: white;*/
@@ -47,6 +49,18 @@ ul {
 .search-result {
 	margin-top: 5px;
 	margin-bottom: 5px;
+}
+
+#select2-input {
+  margin-top: 20px;
+}
+
+#snippet-quote {
+  color: #867970;
+}
+
+#click-off {
+  font-size: 80%;
 }
 
 #overlay {
