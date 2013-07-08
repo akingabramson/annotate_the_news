@@ -15,8 +15,7 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 	},
 
 	render: function() {
-		console.log("rendering")
-		console.log(this.model)
+
 		this.$el.html(this.template({annotation: this.model}))
 		return this;
 	},

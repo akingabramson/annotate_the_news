@@ -60,19 +60,15 @@ NG.Views.ArticleView = Backbone.View.extend({
         document.selection.empty();
     }
     var shownSnippet = this.model.get("snippets").get(snippetId);
-    
+    console.log(shownSnippet);
     shownSnippet.fetch({
       success: function() {
         that.snippetView = new NG.Views.SnippetView({model: shownSnippet,
                           attributes: {event: event}});
         $("#explanation").html(that.snippetView.render().$el);
         // that.$el.append();
-
       }
     });
-
-    
-
   },
 
   populateSnippets: function() {
@@ -129,7 +125,7 @@ NG.Views.ArticleView = Backbone.View.extend({
     if (this.snippetsOverlap(snippet)) {
       // "Can't annotate over an annotation!"
     	var renderedPopup = JST["articles/popup"]({x: 33, y: event.pageY});
-    	this.$el.append(renderedPopup);
+    	NG.Store.modal.open({content: renderedPopup});
 
     } else {
       var that = this;
@@ -158,14 +154,12 @@ NG.Views.ArticleView = Backbone.View.extend({
                                               text: String(snippet)});
     // newSnippet.url = "articles/" + this.model.id + "/snippets/";
     // wasn't working elsewhere
-    var newSnippetView = new NG.Views.SnippetView({model: newSnippet, attributes: {event: event}});
+    // var newSnippetView = new NG.Views.SnippetView({model: newSnippet, attributes: {event: event}});
     // new annotation form
       
-    newSnippetView.render().$el.css({"position":"absolute",
-                                      "top": event.pageY - 290 + "px",
-                                      "left": event.pageX - 200 + "px",
-                                      "background-color": "white"});
-    that.$el.append(newSnippetView.$el);
+    that.snippetView = new NG.Views.SnippetView({model: newSnippet,
+                          attributes: {event: event}});
+    $("#explanation").html(that.snippetView.render().$el);
   },
 
   snippetsOverlap: function(snippet) {

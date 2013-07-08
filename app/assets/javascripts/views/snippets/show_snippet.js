@@ -14,7 +14,8 @@ NG.Views.SnippetView = Backbone.View.extend({
 	render: function() {
 		var that = this;
 		this.$el.addClass("snippetView popup");
-		this.$el.css({"top": this.attributes.event.pageY});
+		this.$el.css({"position": "absolute",
+			"top": this.attributes.event.pageY-200});
 									// "left": this.attributes.event.pageX + 30});
 
 		var newAnnotationFormView = new NG.Views.NewAnnotationForm({model: this.model})
@@ -23,7 +24,13 @@ NG.Views.SnippetView = Backbone.View.extend({
 		var $annotationList = $("<ul>")
 		$annotationList.addClass("annotation-list");
 
-		this.model.get("annotations").each(function(annotation){
+		var annotations = this.model.get("annotations");
+		annotations.comparator = function(annotation) {
+	  	console.log(annotation.iq());
+	  	return -1*annotation.iq();
+		};
+		
+		annotations.sort().each(function(annotation){
 			var annotationShowView = new NG.Views.AnnotationShow({model: annotation});
 			$annotationList.append(annotationShowView.render().$el);
 		});
