@@ -4,8 +4,7 @@ NG.Views.ArticleView = Backbone.View.extend({
     this.$el.addClass("article-div");
     // this.listenTo(this.model.get("snippets"), "add", this.render);
     // this.listenTo(this.model.get("snippets"), "sync", this.render);
-    this.listenTo(this.model, "snippetAdded", this.render);
-    this.listenTo(this.model, "snippetAdded", this.render);
+    this.listenTo(this.model, "snippetAdded", this.populateSnippets);
 
     // this.listenTo(this.model.get("snippets"), "change", this.render);
 		this.listenTo(this.model.get("snippets"), "remove", this.render);
@@ -138,6 +137,8 @@ NG.Views.ArticleView = Backbone.View.extend({
         error: function(resp, resp2) {
           console.log(resp)
           console.log(resp2)
+                    that.removePopups();
+
           var loginPopup = JST["popups/popup"]({x: 33, y: event.pageY, 
                                               text: "Must be logged in to annotate."});
 
