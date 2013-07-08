@@ -12,9 +12,26 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     if @user
-      render json: @user
+      render json: @user.to_json
     else
       render json: {}, status: 404
+    end
+  end
+
+  def edit
+    if current_user
+      render json: current_user.to_json
+    else
+      render json: {}, status: 404
+    end
+  end
+
+  def update
+    if current_user
+      current_user.password = params[:password]
+      render json: current_user.to_json
+    else
+      render json: {}, status: 422
     end
   end
 end

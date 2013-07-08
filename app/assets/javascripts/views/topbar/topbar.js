@@ -43,6 +43,7 @@ NG.Views.TopBar = Backbone.View.extend({
 		var that = this;
 
 		$("#search-bar").select2({
+			width: 450,
 			placeholder: "Search by title, body, source",
 			minimumInputLength: 3,
 			id: function(article){return {id: article.id};},

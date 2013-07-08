@@ -3,7 +3,7 @@ class CurrentUsersController < ApplicationController
     @user = current_user
         
     if @user
-      render json: @user
+      render json: @user.to_json
     else
       render json: {}, status: 404
     end

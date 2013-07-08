@@ -15,5 +15,4 @@ NG.Views.ArticlesIndex = Backbone.View.extend({
   	return that;
   },
 
-
 });

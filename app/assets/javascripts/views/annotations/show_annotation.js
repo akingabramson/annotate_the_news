@@ -43,7 +43,6 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 
 		var vote = this.model.get("user_votes").get(voteId);
 
-		console.log(vote);
 		// if vote matches and is same value, destroy it
 		if (!!vote && vote.get("upvote") == upvoteValue) {
 			vote.destroy({

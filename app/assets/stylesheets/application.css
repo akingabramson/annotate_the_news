@@ -31,6 +31,7 @@
 	background-color: white;
 }
 
+
 .dropdown {
 
 	width: 150px;
@@ -57,7 +58,12 @@
 }
 
 #search {
+  margin-top: 10px;
   text-align: center;
+}
+
+#s2id_autogen1 {
+  visibility: hidden;
 }
 
 #search-bar {

@@ -2,7 +2,7 @@ NewsGenius::Application.routes.draw do
 
   root :to => "root#root"
 
-  resources :users, only: [:create, :destroy, :update]
+  resources :users, only: [:create, :destroy, :update, :edit]
   resource :session, only: [:create, :destroy]
 
   resources :user_votes, only: [:create, :destroy, :update]

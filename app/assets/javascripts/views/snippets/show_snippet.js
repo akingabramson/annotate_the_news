@@ -30,6 +30,7 @@ NG.Views.SnippetView = Backbone.View.extend({
 	  	return -1*annotation.iq();
 		};
 		
+		// sort by IQ rank
 		annotations.sort().each(function(annotation){
 			var annotationShowView = new NG.Views.AnnotationShow({model: annotation});
 			$annotationList.append(annotationShowView.render().$el);

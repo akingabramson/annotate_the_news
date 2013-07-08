@@ -57,8 +57,17 @@ NG.Routers.Articles = Backbone.Router.extend({
 	},
 
 	showProfile: function() {
-		var profileView = new NG.Views.ProfileView();
-		this._swapContentView(profileView);
+		
+		var that = this;
+		$.ajax({
+			url: "users/" + NG.Store.CurrentUser.id + "/edit",
+			success: function(resp) {
+				NG.Store.CurrentUser.set(resp);
+				var profileView = new NG.Views.Profile({model: NG.Store.CurrentUser});
+				that._swapContentView(profileView);
+				console.log(NG.Store.CurrentUser.attributes)				
+			}
+		})
 	},
 
 	_swapContentView: function(newView) {
