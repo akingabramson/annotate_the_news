@@ -13,7 +13,6 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'pry-rails'
-  gem 'zurb-foundation'
 end
 
 gem 'backbone-on-rails'
@@ -22,3 +21,4 @@ gem 'jquery-rails'
 gem 'pg'
 gem 'pg_search'
 gem 'underscore-rails'
+gem 'zurb-foundation'
