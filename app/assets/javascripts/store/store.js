@@ -47,7 +47,7 @@ NG.Store.modal = (function(){
       $modal.show();
       $overlay.show();
       $("html").click(function(e){
-        e.preventDefault();
+        // e.preventDefault();
         method.close();
       });
     };
