@@ -18,9 +18,9 @@
 	<% if (!!currentUser.id) { %>
 			<div id="logged-in-info" class="row">
 				<div id="profile-link-wrapper" class="small-4 columns">
-						<a href="#/profile" id="profile-link"><%=currentUser.get("username")%></a>
+						<a href="#/profile/<%=currentUser.id%>" id="profile-link"><%=currentUser.get("username")%></a>
 				</div>
-				<div id="IQ-points" class="small-4 columns"><a href="#">
+				<div id="IQ-points" class="small-4 columns"><a href="#/profile/<%=currentUser.id%>">
 					IQ: <%=currentUser.get("iq")%></a>
 				</div>
 				<div id="logout-link-wrapper" class="small-4 columns">

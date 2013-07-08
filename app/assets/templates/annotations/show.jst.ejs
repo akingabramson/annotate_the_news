@@ -1,0 +1,11 @@
+<div id="annotation-<%=annotation.id%>-errors">
+</div>
+<div class="annotation" data-id="<%=annotation.id%>"><%=annotation.escape("body")%></div>
+<div class="annotator">-<%=annotation.get("annotator").escape("username")%></div><div class="annotation-iq">IQ: <%=annotation.iq()%></div>
+
+<% if (NG.Store.CurrentUser.id === annotation.get("annotator").id ) { %>
+				<button class="button delete-annotation" data-id="<%=annotation.id%>">Delete</button>
+<% } else { %>
+	<%= JST["annotations/votes"]({annotation: annotation, votes: annotation.get("user_votes")}) %>
+	<!-- if annotation upvote id is user, toggle it -->
+<% } %>

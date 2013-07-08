@@ -1,0 +1,6 @@
+<ul id="topic-list">
+	<% topics.each(function(topic){ %>
+		<li id="topic-list-item"><a id="topic-link" href="#/topics/<%=topic.id%>"><%=topic.escape("name")%></a></li>
+
+	<% }) %>
+</ul>

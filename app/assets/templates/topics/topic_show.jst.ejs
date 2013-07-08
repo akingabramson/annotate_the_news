@@ -1,0 +1,7 @@
+<h2 id="topic-header"><%=topic.escape("name")%></h2>
+
+<ul id="topic-article-list">
+	<% articles.each(function(article){ %>
+		<li id="topic-article-list-item"><a href="#/articles/<%=article.id%>"><%=article.escape("title")%></li>
+	<% }) %>
+</ul>

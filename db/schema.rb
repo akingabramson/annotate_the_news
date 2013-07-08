@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130706192025) do
+ActiveRecord::Schema.define(:version => 20130707071645) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "annotator_id"
@@ -39,7 +39,9 @@ ActiveRecord::Schema.define(:version => 20130706192025) do
     t.datetime "updated_at",                      :null => false
   end
 
+  add_index "articles", ["created_at"], :name => "index_articles_on_created_at"
   add_index "articles", ["topic_id"], :name => "index_articles_on_topic_id"
+  add_index "articles", ["updated_at"], :name => "index_articles_on_updated_at"
 
   create_table "snippets", :force => true do |t|
     t.string   "text"

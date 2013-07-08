@@ -1,0 +1,3 @@
+NG.Collections.SearchResults = Backbone.Collection.extend({
+	model: NG.Models.SearchResult
+})

@@ -4,7 +4,9 @@ NG.Views.ArticleView = Backbone.View.extend({
     this.$el.addClass("article-div");
     // this.listenTo(this.model.get("snippets"), "add", this.render);
     // this.listenTo(this.model.get("snippets"), "sync", this.render);
-    this.listenTo(this.model, "snippetAdded", this.render)
+    this.listenTo(this.model, "snippetAdded", this.render);
+    this.listenTo(this.model, "snippetAdded", this.render);
+
     // this.listenTo(this.model.get("snippets"), "change", this.render);
 		this.listenTo(this.model.get("snippets"), "remove", this.render);
     $("html").on("click", function(e) {that.checkClick(e)});

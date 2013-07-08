@@ -92,9 +92,9 @@ NG.Views.TopBar = Backbone.View.extend({
 			data: data,
 			success: function(resp) {
 				AUTH_TOKEN = resp.auth_token;
+				NG.Store.CurrentUser = NG.Models.CurrentUser.findOrCreate(resp);
 				console.log("logged in")
 				$loggingOut = $("<div>").remove();
-
 				$loginDiv.toggleClass("hidden");
 				this.loginClicked = false;
 				that.render();

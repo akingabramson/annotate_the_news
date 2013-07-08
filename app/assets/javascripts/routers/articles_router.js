@@ -7,6 +7,7 @@ NG.Routers.Articles = Backbone.Router.extend({
 		"articles/:id": "showArticle",
 		"new_article": "newArticle",
 		"topics/:id": "showTopic",
+		"profile/:id": "showProfile",
 	},
 
 	homepage: function() {
@@ -53,6 +54,11 @@ NG.Routers.Articles = Backbone.Router.extend({
 				that._swapContentView(topicShow);
 			}
 		})
+	},
+
+	showProfile: function() {
+		var profileView = new NG.Views.ProfileView();
+		this._swapContentView(profileView);
 	},
 
 	_swapContentView: function(newView) {

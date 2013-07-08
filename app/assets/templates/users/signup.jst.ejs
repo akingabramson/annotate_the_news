@@ -1,0 +1,16 @@
+<div id="signup-div" class="hidden">
+	<form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post">	<input name="utf8" type="hidden" value="&#x2713;" />
+		<input name="authenticity_token" type="hidden" value="<%=AUTH_TOKEN%>" />
+	  
+	  <label for="user_email">Email</label>
+	  <input autofocus="autofocus" id="user_email" name="user[email]" size="30" type="email" value="" />
+
+	  <label for="user_username">Username</label>
+	  <input autofocus="autofocus" id="user_username" name="user[username]" size="30" type="text" />
+
+	  <label for="user_password">Password</label>
+	  <input id="user_password" name="user[password]" size="30" type="password" />
+
+	  <input name="commit" id="signup-button" type="submit" value="Sign up" />
+	</form>
+</div>
