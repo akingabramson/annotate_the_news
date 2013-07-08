@@ -48,7 +48,6 @@ NG.Views.ArticleView = Backbone.View.extend({
   showSnippet: function(event) {
     var that = this;
     var snippetId = $(event.target).attr("data-id");
-
     if (this.lastSnippetId == snippetId) {
       this.snippetView.remove();
       this.lastSnippetId = undefined;
@@ -61,7 +60,7 @@ NG.Views.ArticleView = Backbone.View.extend({
     } else if (document.selection) {
         document.selection.empty();
     }
-    var shownSnippet = this.model.get("snippets").get(snippetId);
+    var shownSnippet = NG.Models.Snippet.findOrCreate(snippetId);
     console.log(shownSnippet);
     shownSnippet.fetch({
       success: function() {
