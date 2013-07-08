@@ -46,7 +46,7 @@ NG.Store.modal = (function(){
 
       $modal.show();
       $overlay.show();
-      $("html").click(function(e){
+      $("#overlay").click(function(e){
         // e.preventDefault();
         method.close();
       });
