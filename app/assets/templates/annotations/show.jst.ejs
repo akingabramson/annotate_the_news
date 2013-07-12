@@ -6,6 +6,7 @@
 <% if (NG.Store.CurrentUser.id === annotation.get("annotator").id ) { %>
 				<button class="button delete-annotation" data-id="<%=annotation.id%>">Delete</button>
 <% } else { %>
+	<% console.log(annotation.get("user_votes")) %>
 	<%= JST["annotations/votes"]({annotation: annotation, votes: annotation.get("user_votes")}) %>
 	<!-- if annotation upvote id is user, toggle it -->
 <% } %>

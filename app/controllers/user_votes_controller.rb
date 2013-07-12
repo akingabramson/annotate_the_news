@@ -12,8 +12,10 @@ class UserVotesController < ApplicationController
   end
 
   def destroy
-    @uservote = current_user.user_votes.find(params[:id])
-    if @uservote
+    p current_user.username
+    @uservote = Uservote.find(params[:id])
+    p @uservote.user_id
+    if @uservote && (@uservote.user_id == current_user.id)
       @uservote.destroy
       render json: {message: "destroyed"}     
     else

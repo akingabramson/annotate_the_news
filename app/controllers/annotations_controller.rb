@@ -24,5 +24,11 @@ class AnnotationsController < ApplicationController
   end
 
   def show
+    @annotation = Annotation.find(params[:id])
+    if @annotation
+      render json: @annotation
+    else
+      render json: {}, status: 404
+    end
   end
 end

@@ -23,14 +23,20 @@ NG.Views.SnippetView = Backbone.View.extend({
 
 		var annotations = this.model.get("annotations");
 		annotations.comparator = function(annotation) {
-	  	console.log(annotation.iq());
 	  	return -1*annotation.iq();
 		};
 		
 		// sort by IQ rank
 		annotations.sort().each(function(annotation){
-			var annotationShowView = new NG.Views.AnnotationShow({model: annotation});
-			$annotationList.append(annotationShowView.render().$el);
+			annotation.fetch({
+				success: function() {
+					var annotationShowView = new NG.Views.AnnotationShow({model: annotation});
+					$annotationList.append(annotationShowView.render().$el);
+				},
+				error: function() {
+
+				}
+			});
 		});
 
 		this.$el.append($annotationList);

@@ -17,6 +17,7 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 	render: function() {
 
 		this.$el.html(this.template({annotation: this.model}))
+		this.$el
 		return this;
 	},
 
@@ -42,6 +43,8 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 									user_id: NG.Store.CurrentUser.id};
 
 		var vote = this.model.get("user_votes").get(voteId);
+		
+		event.currentTarget.disabled = true;
 
 		// if vote matches and is same value, destroy it
 		if (!!vote && vote.get("upvote") == upvoteValue) {
@@ -49,6 +52,8 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 				success: function(model, response) {
 					console.log("vote destroyed");
 					that.model.get("user_votes").remove(vote);
+					event.currentTarget.disabled = false;
+					that.render();
 				}
 			});
 		} else {
@@ -56,16 +61,20 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 			if (!vote) {
 				vote = NG.Models.Vote.findOrCreate(params);
 			}
-
 			// update or create that vote, which is in currentUserVotes
 			vote.save(params, {
 				success: function(model, response) {
 					console.log("vote saved");
 					that.model.get("user_votes").set(vote);
+					event.currentTarget.disabled = false;
+					that.render();
+
 				},
 				error: function(model, response) {
 					console.log("error")
 					that.model.get("user_votes").remove(vote);
+					event.currentTarget.disabled = false;
+					that.render();
 				}});
 			
 		} 
@@ -78,6 +87,7 @@ NG.Views.AnnotationShow = Backbone.View.extend({
 		this.model.destroy({
 			success: function() {
 				that.remove();
+
 			},
 			error: function() {
 				console.log("couldn't delete");

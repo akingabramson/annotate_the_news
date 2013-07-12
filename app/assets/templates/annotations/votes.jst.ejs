@@ -1,6 +1,9 @@
-<% var vote = votes.findWhere({annotation_id: annotation.id}) %>
+<% var vote = votes.findWhere({user_id: NG.Store.CurrentUser.id}) %>
+<% console.log(NG.Store.CurrentUser.id) %>
+<% console.log(vote.user_id) %>
 
 <% if (!!vote) { %>
+	<% console.log(vote) %>
 	<% if (vote.get("upvote")) { %>
 		<button class="vote upvote upvoted tiny round button" data-annotationid="<%=annotation.id%>" data-upvote="true" data-voteid="<%=vote.id%>">Upvote</button>
 		<button class="vote downvote tiny round button" data-annotationid="<%=annotation.id%>" data-upvote="false" data-voteid="<%=vote.id%>">Downvote</button>
