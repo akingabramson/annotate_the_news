@@ -44,7 +44,6 @@ NG.Views.NewArticleView = Backbone.View.extend({
 			error: function(object, xhrf) {
 				var error = JST["popups/popup"]({x: 33, y: event.pageY, 
                                               text: "Make sure all the fields are filled in."});
-
         NG.Store.modal.open({content: error});
 				console.log(object)
 				// re-render the page
