@@ -8,11 +8,24 @@
 	z-index:100;
 	position: absolute;
 	background-color: white;
+	border: 1px solid #C0C0C0;
+  border-radius:14px;
+}
+
+#new_session {
+	width: 150px;
+	margin: 5px;
 }
 
 #signup-div {
 	z-index:100;
 	position: absolute;
 	background-color: white;
+	border: 1px solid #C0C0C0;
+  border-radius:14px;
+  width: 150px;
 }
 
+#new_user {
+	margin: 5px;
+}
