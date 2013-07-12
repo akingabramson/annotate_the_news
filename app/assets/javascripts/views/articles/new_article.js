@@ -5,7 +5,8 @@ NG.Views.NewArticleView = Backbone.View.extend({
 		"click #newArticleForm": "removePopups",
 	},
 	render: function() {
-		var renderedForm = this.template({newArticle: this.model, topics: this.attributes.topics});
+		console.log(NG.Store.Topics)
+		var renderedForm = this.template({newArticle: this.model, topics: NG.Store.Topics});
 
 		this.$el.html(renderedForm);
 		return this
@@ -41,6 +42,10 @@ NG.Views.NewArticleView = Backbone.View.extend({
 				NG.Router.navigate("#articles/"+ object.id, {trigger: true});
 			},
 			error: function(object, xhrf) {
+				var error = JST["popups/popup"]({x: 33, y: event.pageY, 
+                                              text: "Make sure all the fields are filled in."});
+
+        NG.Store.modal.open({content: error});
 				console.log(object)
 				// re-render the page
 

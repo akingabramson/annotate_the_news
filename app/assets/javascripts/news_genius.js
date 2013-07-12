@@ -16,14 +16,15 @@ window.NG = {
       success: function() {
         sidebar = new NG.Views.Sidebar({el: $("#sidebar")})
         sidebar.render()
+        NG.Router = new NG.Routers.Articles({$content: $("#main")});
+        Backbone.history.start(); 
       }, 
       error: function() {
         console.log("could not load topics")
       }
     })
 
-    NG.Router = new NG.Routers.Articles({$content: $("#main")});
-    Backbone.history.start();  
+ 
   }
 };
 

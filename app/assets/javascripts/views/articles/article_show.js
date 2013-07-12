@@ -8,12 +8,16 @@ NG.Views.ArticleView = Backbone.View.extend({
 
     // this.listenTo(this.model.get("snippets"), "change", this.render);
 		this.listenTo(this.model.get("snippets"), "remove", this.render);
-    $("html").on("click", function(e) {that.checkClick(e)});
+    $("body").on("click", function(e) {that.checkClick(e)});
 	},
+  // events: {
+  //   "click" : "checkClick",
+  // },
 
 	template: JST["articles/article_show"],
 
   checkClick: function(event) {
+    console.log("checking")
     var clickedThing = $(event.target)
 
     if (clickedThing.hasClass("snippet-link")) {
@@ -137,7 +141,7 @@ NG.Views.ArticleView = Backbone.View.extend({
         error: function(resp, resp2) {
           console.log(resp)
           console.log(resp2)
-                    that.removePopups();
+          that.removePopups();
 
           var loginPopup = JST["popups/popup"]({x: 33, y: event.pageY, 
                                               text: "Must be logged in to annotate."});
