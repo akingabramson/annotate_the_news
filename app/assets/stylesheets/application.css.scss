@@ -13,11 +13,40 @@
  *= require_tree .
  */
 
+body {
+  background: url(img-thing.jpeg) center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
 
 ul {
   list-style-type: none;
 }
 
+#title {
+  background-image: -webkit-gradient(
+          linear, right top, left top, from(rgba(255, 255, 255, 1.0)),
+          to(rgba(255, 255, 255, 0))
+          );
+}
+
+#title-text {
+  font-family: Georgia;
+}
+
+#sidebar {
+  background-image: -webkit-gradient(
+  linear, left top, left bottom, from(rgba(50,50,50,0.99)),
+  to(rgba(80,80,80,0.8)), color-stop(.7,#333333)
+  );
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  /*border-right: 1px solid black;*/
+
+
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
 
 #newArticleBody {
   height: 200px;
@@ -25,6 +54,15 @@ ul {
 
 #newArticleTopic {
   width: 150px;
+}
+
+#main {
+  margin-left: 20px;
+  background: -webkit-gradient(linear, left top, left bottom, from(#C0C0C0), to(#FFF));
+  border: 1px solid black;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+
 }
 
 .popup {
@@ -121,6 +159,22 @@ ul {
   width: 400px;
   height: 150px;
 }*/
+
+
+.snippetView {
+  margin-left: 20px;
+  background-color: white;
+  border: 1px solid #C0C0C0;
+  border-radius:14px;
+}
+
+#new-annotation-div {
+  margin: 10px;
+}
+
+.annotation-list {
+  margin: 10px;
+}
 
 .annotator {
   font-size: 12px;

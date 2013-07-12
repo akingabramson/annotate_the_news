@@ -5,6 +5,7 @@ window.NG = {
   Routers: {},
   Store: {},
   initialize: function() {
+    
     NG.Store.CurrentUser = new NG.Models.CurrentUser();
 
 

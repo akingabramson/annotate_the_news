@@ -63,6 +63,7 @@ NG.Views.ArticleView = Backbone.View.extend({
     } else if (document.selection) {
         document.selection.empty();
     }
+    
     var shownSnippet = NG.Models.Snippet.findOrCreate(snippetId);
     console.log(shownSnippet);
     shownSnippet.fetch({
@@ -128,7 +129,7 @@ NG.Views.ArticleView = Backbone.View.extend({
     var snippetIndices = this.grabSnippetIndices(snippet);
     if (this.snippetsOverlap(snippet)) {
       // "Can't annotate over an annotation!"
-    	var renderedPopup = JST["articles/popup"]({x: 33, y: event.pageY});
+    	var renderedPopup = JST["popups/popup"]({x: 33, y: event.pageY, text: "Can't annotate over an annotation!"});
     	NG.Store.modal.open({content: renderedPopup});
 
     } else {
