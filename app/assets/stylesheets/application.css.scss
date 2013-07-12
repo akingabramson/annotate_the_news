@@ -17,6 +17,7 @@ body {
   background: url(img-thing.jpeg) center center;
   background-size: cover;
   background-attachment: fixed;
+
 }
 
 ul {
@@ -41,11 +42,17 @@ ul {
   );
   border-left: 1px solid black;
   border-top: 1px solid black;
+  float: left;
   /*border-right: 1px solid black;*/
 
 
   -moz-border-radius: 15px;
   border-radius: 15px;
+}
+
+#explanation {
+  position: relative;
+  width: 25%;
 }
 
 #newArticleBody {
@@ -62,6 +69,8 @@ ul {
   border: 1px solid black;
   -moz-border-radius: 15px;
   border-radius: 15px;
+  float: left;
+  width: 56%;
 
 }
 

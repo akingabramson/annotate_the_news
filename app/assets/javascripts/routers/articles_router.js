@@ -23,10 +23,12 @@ NG.Routers.Articles = Backbone.Router.extend({
 
 	showArticle: function(id) {
 		var that = this;
+
 		var article = NG.Models.Article.findOrCreate({id: id});
 
 		article.fetch({
 			success: function(model, response) {
+				
 				var articleView = new NG.Views.ArticleView({model: article});
 				that._swapContentView(articleView);
 			},
