@@ -27,13 +27,15 @@ class Article < ActiveRecord::Base
   validates :body, :url, :title, :news_source, :submitter_id, :topic_id, presence: :true
   validates :url, uniqueness: true
 
-  has_many :snippets
+  has_many :snippets, :dependent => :destroy
   belongs_to :topic
   belongs_to :submitter, class_name: "User", :foreign_key => :submitter_id
 
 
   def as_json(options = {})
-    super(options.merge({include: :snippets}))
+    article_json = super(options.merge({include: :snippets}))
+    article_json[:body] = body.html_safe
+    article_json
        # {include: {annotations: {include: [:user_votes]}}}}}
     # iq is serializable hashing
 

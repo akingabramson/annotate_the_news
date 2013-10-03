@@ -14,6 +14,7 @@ class ArticlesController < ApplicationController
 
   def create
     @article = current_user.submitted_articles.build(params[:article])
+    @article.body = @article.body.html_safe
     if @article.save
       flash[:article_success] = "Article created."
       render json: @article
