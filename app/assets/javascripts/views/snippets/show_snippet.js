@@ -11,7 +11,7 @@ NG.Views.SnippetView = Backbone.View.extend({
 	render: function() {
 		var that = this;
 		this.$el.addClass("snippetView popup");
-		this.$el.css({"position": "relative",
+		this.$el.css({"position": "absolute",
 									"top": this.attributes.event.offsetY});
 									// "left": this.attributes.event.pageX + 30});
 
