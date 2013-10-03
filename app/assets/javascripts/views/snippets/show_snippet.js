@@ -22,6 +22,7 @@ NG.Views.SnippetView = Backbone.View.extend({
 		$annotationList.addClass("annotation-list");
 
 		var annotations = this.model.get("annotations");
+
 		annotations.comparator = function(annotation) {
 	  	return -1*annotation.iq();
 		};
@@ -31,17 +32,12 @@ NG.Views.SnippetView = Backbone.View.extend({
 			annotation.fetch({
 				success: function() {
 					var annotationShowView = new NG.Views.AnnotationShow({model: annotation});
-					$annotationList.append(annotationShowView.render().$el);
+					$annotationList.prepend(annotationShowView.render().$el);
+					that.$el.append($annotationList);
 				},
-				error: function() {
-
-				}
 			});
 		});
-
-		this.$el.append($annotationList);
-
-		return this
+		return this;
 	},
 
 	addAnnotation: function(annotation) {
