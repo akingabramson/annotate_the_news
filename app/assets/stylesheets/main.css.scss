@@ -2,7 +2,7 @@ body {
   background: url(img-thing.jpeg) center center;
   background-size: cover;
   background-attachment: fixed;
-
+  font-family: serif;
 }
 
 ul {
@@ -17,7 +17,15 @@ ul {
 }
 
 #title-text {
-  font-family: Georgia;
+  font-family: serif;
+}
+
+h3 {
+ font-family: serif; 
+}
+
+h5 {
+  font-family: serif;
 }
 
 #sidebar {
